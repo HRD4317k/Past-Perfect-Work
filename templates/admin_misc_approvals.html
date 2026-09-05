@@ -1,0 +1,238 @@
+{% extends "admin_base.html" %}
+{% block title %}Miscellaneous Approvals{% endblock %}
+{% block content %}
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+<link
+  rel="stylesheet"
+  as="style"
+  onload="this.rel='stylesheet'"
+  href="https://fonts.googleapis.com/css2?display=swap&family=Inter%3Awght%40400%3B500%3B700%3B900&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+<div class="relative flex size-full min-h-screen flex-col bg-neutral-50 group/design-root overflow-x-hidden" style='font-family: Inter, "Noto Sans", sans-serif;'>
+  <div class="layout-container flex h-full grow flex-col">
+    <div class="px-4 sm:px-6 lg:px-40 flex flex-1 justify-center py-5">
+      <div class="layout-content-container flex flex-col w-full max-w-[1200px] flex-1">
+        <div class="flex flex-wrap justify-between gap-3 p-4">
+          <p class="text-[#141414] tracking-tight text-[32px] font-bold leading-tight min-w-72">Miscellaneous Approvals</p>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="px-4 py-3">
+                <div class="bg-{{ 'green-100 text-green-800' if category == 'success' else 'red-100 text-red-800' }} rounded-lg p-4 mb-4 flex justify-between items-center">
+                  {{ message }}
+                  <button type="button" class="text-current opacity-50 hover:opacity-100" onclick="this.parentElement.style.display='none';">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M128,24A104,104,0,1,0,232,128,104.13,104.13,0,0,0,128,24Zm12,57.66,30.35,30.34a8,8,0,0,1-11.31,11.31L128,92.68l-30.34,30.35a8,8,0,0,1-11.31-11.31L116.69,81.34a8,8,0,0,1,11.31,0Z"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        {% if not items %}
+          <div class="flex flex-col px-4 py-6">
+            <div class="flex flex-col items-center gap-6">
+              <div
+                class="bg-center bg-no-repeat aspect-video bg-cover rounded-xl w-full max-w-[360px]"
+                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDCaZZBt6JfatT-1d6kcX3_NJkIefuf9uj77Gd1DY2mNHU0xsdPgsOl0vzVX-3ORJuIchTNKiRvFqdB9N947_y1YH-vrXrp66p8B1gPmMid_3Nfzy7RtLKC8EJKtnJiZNWxCX_X9t-QSlQbIER731Jj7PhYYVet1k9aE6-vV0UbGBN7zq0IigPBrfuN298IMfhHOw-aTjgjXOhQwF8-P9_H4yM1YNzwk3tKbOcg1-0RvdgNatHFE0QdMZXQ0BRZ9xrIBLPkCqBetMcI");'
+              ></div>
+              <div class="flex max-w-[480px] flex-col items-center gap-2">
+                <p class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] max-w-[480px] text-center">No items available for approval</p>
+                <p class="text-[#141414] text-sm font-normal leading-normal max-w-[480px] text-center">
+                  There are currently no items awaiting your approval. Please check back later.
+                </p>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+        {% if items %}
+          <div class="px-4 py-3 @container">
+            <div class="relative overflow-x-auto rounded-xl border border-[#dbdbdb] bg-neutral-50">
+              <table class="w-full min-w-[1000px] table-auto">
+                <thead>
+                  <tr class="bg-neutral-50">
+                    <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">Image</th>
+                    <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">Item Name</th>
+                    <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">User Name</th>
+                    <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">Phone Number</th>
+                    <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">Price</th>
+                    <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">Approve</th>
+                    <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">Reject</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in items %}
+                    <tr class="border-t border-t-[#dbdbdb]">
+                      <td class="h-[72px] px-4 py-2 text-sm font-normal leading-normal">
+                        {% set first_image = item.pic_file_path.split(',')[0] if item.pic_file_path else 'default_image.jpg' %}
+                        <div
+                          class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10"
+                          style='background-image: url("{{ url_for('static', filename=first_image.split('static/')[1]) if first_image.startswith('static/') else first_image }}");'
+                        ></div>
+                      </td>
+                      <td class="h-[72px] px-4 py-2 text-neutral-500 text-sm font-normal leading-normal">{{ item.name }}</td>
+                      <td class="h-[72px] px-4 py-2 text-neutral-500 text-sm font-normal leading-normal">{{ item.user.username }}</td>
+                      <td class="h-[72px] px-4 py-2 text-neutral-500 text-sm font-normal leading-normal">{{ item.user.mobile_no }}</td>
+                      <td class="h-[72px] px-4 py-2 text-neutral-500 text-sm font-normal leading-normal">₹{{ '%.2f' % item.price }}</td>
+                      <td class="h-[72px] px-4 py-2 text-neutral-500 text-sm font-bold leading-normal tracking-[0.015em]">
+                        <form action="{{ url_for('approve_misc', item_id=item.id) }}" method="POST">
+                          <div class="mb-2">
+                            <label for="subcategory_{{ item.id }}" class="text-xs font-medium text-[#141414]">Category/Subcategory <span class="text-red-500">*</span></label>
+                            <select name="subcategory" id="subcategory_{{ item.id }}" class="mt-1 block w-full rounded-md border-[#dbdbdb] shadow-sm focus:border-[#22c55e] focus:ring focus:ring-[#22c55e] focus:ring-opacity-50 text-xs" required>
+                              <option value="">Choose a category/subcategory</option>
+                              <optgroup label="Cycles">
+                                <option value="Gear">Gear</option>
+                                <option value="Gearless">Gearless</option>
+                                <option value="Other_Cycle">Other</option>
+                              </optgroup>
+                              <optgroup label="Electronics">
+                                <option value="Keyboard/Mouse">Keyboard/Mouse</option>
+                                <option value="Writing Pad">Writing Pad</option>
+                                <option value="Kindle">Kindle</option>
+                                <option value="Monitor">Monitor</option>
+                                <option value="USB/LAN Devices">USB/LAN Devices</option>
+                                <option value="Trimmer">Trimmer</option>
+                                <option value="Controller/Consoles">Controller/Consoles</option>
+                                <option value="Extension Cord">Extension Cord</option>
+                                <option value="Wifi Router">Wifi Router</option>
+                                <option value="Earbuds">Earbuds</option>
+                                <option value="Speaker">Speaker</option>
+                                <option value="Mouse">Mouse</option>
+                                <option value="Power Bank">Power Bank</option>
+                                <option value="Other_Electronics">Other</option>
+                              </optgroup>
+                              <optgroup label="Hostel Essentials">
+                                <option value="WiFi Router">WiFi Router</option>
+                                <option value="Umbrella">Umbrella</option>
+                                <option value="Mosquito Nets/Rackets">Mosquito Nets/Rackets</option>
+                                <option value="Curtains">Curtains</option>
+                                <option value="Wooden Chair">Wooden Chair</option>
+                                <option value="Office Chair">Office Chair</option>
+                                <option value="Shelves">Shelves</option>
+                                <option value="Decor">Decor</option>
+                                <option value="Buckets/Mugs">Buckets/Mugs</option>
+                                <option value="Other_Hostel">Other</option>
+                              </optgroup>
+                              <optgroup label="Mattress">
+                                <option value="Cotton">Cotton</option>
+                                <option value="Foam">Foam</option>
+                                <option value="Other_Mattress">Other</option>
+                              </optgroup>
+                              <optgroup label="Watches">
+                                <option value="Digital">Digital</option>
+                                <option value="Analog">Analog</option>
+                                <option value="Smartwatches">Smartwatches</option>
+                                <option value="Other_Watches">Other</option>
+                              </optgroup>
+                              <optgroup label="Books">
+                                <option value="Novels">Novels</option>
+                                <option value="Course Books">Course Books</option>
+                                <option value="Other_Books">Other</option>
+                              </optgroup>
+                              <optgroup label="Fitness & Sports">
+                                <option value="Gym Gear">Gym Gear</option>
+                                <option value="Balls">Balls</option>
+                                <option value="Yoga Mat">Yoga Mat</option>
+                                <option value="Skipping Rope">Skipping Rope</option>
+                                <option value="Rackets">Rackets</option>
+                                <option value="Other_Sports">Other</option>
+                              </optgroup>
+                              <optgroup label="Academic Accessories">
+                                <option value="ED drafter">ED Kit</option>
+                                <option value="Whiteboard">White Board</option>
+                                <option value="Chart Holder">Chart Holder</option>
+                                <option value="Lab Coat">Lab Coat</option>
+                                <option value="Calculator">Calculator</option>
+                                <option value="Laptop_stand">Laptop Stand</option>
+                                <option value="Study Lamp">Study Lamp</option>
+                                <option value="Writing Pad">Writing Pad</option>
+                                <option value="Other_Academic">Other</option>
+                              </optgroup>
+                              <optgroup label="Appliances & Kitchenware">
+                                <option value="Table Fan">Table Fan</option>
+                                <option value="Cooler">Cooler</option>
+                                <option value="Utensils/Cutlery">Utensils/Cutlery</option>
+                                <option value="Washing Machine">Washing Machine</option>
+                                <option value="Induction">Induction</option>
+                                <option value="Kettle">Kettle</option>
+                                <option value="Other_Appliances">Other</option>
+                              </optgroup>
+                              <optgroup label="Personal Accessories">
+                                <option value="Shoes">Shoes</option>
+                                <option value="Musical Instruments">Musical Instruments</option>
+                                <option value="Belts">Belts</option>
+                                <option value="Bags">Bags</option>
+                                <option value="Umbrella">Umbrella</option>
+                                <option value="Other_Personal">Other</option>
+                              </optgroup>
+                              <optgroup label="Miscellaneous">
+                                <option value="Other_Miscellaneous">Other</option>
+                              </optgroup>
+                            </select>
+                          </div>
+                          <button type="submit" class="cursor-pointer rounded-full h-8 bg-[#2f855a] text-[#141414] text-sm font-bold leading-normal tracking-[0.015em] px-4 min-w-[120px]" onclick="return confirm('Approve this miscellaneous item?')">Approve</button>
+                        </form>
+                      </td>
+                      <td class="h-[72px] px-4 py-2 text-neutral-500 text-sm font-bold leading-normal tracking-[0.015em]">
+                        <form action="{{ url_for('delete_misc', item_id=item.id) }}" method="POST" onsubmit="return validateRejection(this)">
+                          <div class="mb-2">
+                            <label for="reason_{{ item.id }}" class="text-xs font-medium text-[#141414]">Reason <span class="text-red-500">*</span></label>
+                            <textarea name="reason" id="reason_{{ item.id }}" class="mt-1 block w-full rounded-md border-[#dbdbdb] shadow-sm focus:border-[#ef4444] focus:ring focus:ring-[#ef4444] focus:ring-opacity-50 text-xs" placeholder="Rejection reason" required rows="2"></textarea>
+                          </div>
+                          <button type="submit" class="cursor-pointer rounded-full h-8 bg-[#f87171] text-[#141414] text-sm font-bold leading-normal tracking-[0.015em] px-4 min-w-[120px]">Reject</button>
+                        </form>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <style>
+              /* Ensure table cells don't wrap text unnecessarily */
+              th, td {
+                white-space: nowrap;
+              }
+              /* Custom scrollbar styles for better appearance */
+              .overflow-x-auto::-webkit-scrollbar {
+                height: 8px;
+              }
+              .overflow-x-auto::-webkit-scrollbar-track {
+                background: #f1f1f1;
+                border-radius: 4px;
+              }
+              .overflow-x-auto::-webkit-scrollbar-thumb {
+                background: #888;
+                border-radius: 4px;
+              }
+              .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+                background: #555;
+              }
+              /* Responsive column widths */
+              @media (max-width: 640px) {
+                .min-w-[1000px] {
+                  min-width: 800px;
+                }
+              }
+            </style>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function validateRejection(form) {
+    const reason = form.querySelector('textarea[name="reason"]').value.trim();
+    if (!reason) {
+      alert('Please provide a reason for rejection.');
+      return false;
+    }
+    return confirm('Are you sure you want to reject this item?');
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,138 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+<link
+  rel="stylesheet"
+  as="style"
+  onload="this.rel='stylesheet'"
+  href="https://fonts.googleapis.com/css2?display=swap&family=Inter%3Awght%40400%3B500%3B700%3B900&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+<div class="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden" style='font-family: Inter, "Noto Sans", sans-serif;'>
+  <div class="layout-container flex h-full grow flex-col">
+    <div class="px-40 flex flex-1 justify-center py-5">
+      <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+        <div class="flex flex-wrap justify-between gap-3 p-4">
+          <p class="text-[#121416] tracking-light text-[32px] font-bold leading-tight min-w-72">Dashboard</p>
+        </div>
+        <h2 class="text-[#121416] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Today's Stats</h2>
+        <div class="flex flex-wrap gap-4 p-4">
+          <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#dde1e3]">
+            <p class="text-[#121416] text-base font-medium leading-normal">Today's Users</p>
+            <p class="text-[#121416] tracking-light text-2xl font-bold leading-tight">{{ daily_users }}</p>
+          </div>
+          <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#dde1e3]">
+            <p class="text-[#121416] text-base font-medium leading-normal">Today's Listings</p>
+            <p class="text-[#121416] tracking-light text-2xl font-bold leading-tight">{{ daily_items }}</p>
+          </div>
+          <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#dde1e3]">
+            <p class="text-[#121416] text-base font-medium leading-normal">Today's Sales</p>
+            <p class="text-[#121416] tracking-light text-2xl font-bold leading-tight">{{ daily_sales }}</p>
+          </div>
+          <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#dde1e3]">
+            <p class="text-[#121416] text-base font-medium leading-normal">Today's Revenue</p>
+            <p class="text-[#121416] tracking-light text-2xl font-bold leading-tight">₹{{ '%.2f' % daily_revenue }}</p>
+          </div>
+          <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#dde1e3]">
+            <p class="text-[#121416] text-base font-medium leading-normal">Today's Profit</p>
+            <p class="text-[#121416] tracking-light text-2xl font-bold leading-tight">₹{{ '%.2f' % daily_profit }}</p>
+          </div>
+        </div>
+        <h2 class="text-[#121416] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Current Month's Stats</h2>
+        <div class="flex flex-wrap gap-4 p-4">
+          <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#dde1e3]">
+            <p class="text-[#121416] text-base font-medium leading-normal">Current Month Users</p>
+            <p class="text-[#121416] tracking-light text-2xl font-bold leading-tight">{{ monthly_users }}</p>
+          </div>
+          <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#dde1e3]">
+            <p class="text-[#121416] text-base font-medium leading-normal">Current Month Listings</p>
+            <p class="text-[#121416] tracking-light text-2xl font-bold leading-tight">{{ monthly_items }}</p>
+          </div>
+          <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#dde1e3]">
+            <p class="text-[#121416] text-base font-medium leading-normal">Current Month Sales</p>
+            <p class="text-[#121416] tracking-light text-2xl font-bold leading-tight">{{ monthly_sales }}</p>
+          </div>
+          <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#dde1e3]">
+            <p class="text-[#121416] text-base font-medium leading-normal">Current Month Revenue</p>
+            <p class="text-[#121416] tracking-light text-2xl font-bold leading-tight">₹{{ '%.2f' % monthly_revenue }}</p>
+          </div>
+          <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#dde1e3]">
+            <p class="text-[#121416] text-base font-medium leading-normal">Current Month Profit</p>
+            <p class="text-[#121416] tracking-light text-2xl font-bold leading-tight">₹{{ '%.2f' % monthly_profit }}</p>
+          </div>
+        </div>
+        <h2 class="text-[#121416] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Overview</h2>
+        <div class="flex flex-wrap gap-4 p-4">
+          <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#dde1e3]">
+            <p class="text-[#121416] text-base font-medium leading-normal">Total Users</p>
+            <p class="text-[#121416] tracking-light text-2xl font-bold leading-tight">{{ total_users }}</p>
+          </div>
+          <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#dde1e3]">
+            <p class="text-[#121416] text-base font-medium leading-normal">Active Listings</p>
+            <p class="text-[#121416] tracking-light text-2xl font-bold leading-tight">{{ total_active_items }}</p>
+          </div>
+          <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#dde1e3]">
+            <p class="text-[#121416] text-base font-medium leading-normal">Total Listings</p>
+            <p class="text-[#121416] tracking-light text-2xl font-bold leading-tight">{{ total_listings }}</p>
+          </div>
+          <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#dde1e3]">
+            <p class="text-[#121416] text-base font-medium leading-normal">Miscellaneous Approvals Pending</p>
+            <p class="text-[#121416] tracking-light text-2xl font-bold leading-tight">{{ total_misc_approvals }}</p>
+          </div>
+          <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#dde1e3]">
+            <p class="text-[#121416] text-base font-medium leading-normal">Assured Items Pending</p>
+            <p class="text-[#121416] tracking-light text-2xl font-bold leading-tight">{{ total_assure_pending }}</p>
+          </div>
+          <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#dde1e3]">
+            <p class="text-[#121416] text-base font-medium leading-normal">Delivery Pending</p>
+            <p class="text-[#121416] tracking-light text-2xl font-bold leading-tight">{{ total_delivery_pending }}</p>
+          </div>
+          <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#dde1e3]">
+            <p class="text-[#121416] text-base font-medium leading-normal">Total Sales</p>
+            <p class="text-[#121416] tracking-light text-2xl font-bold leading-tight">{{ total_sales }}</p>
+          </div>
+          <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#dde1e3]">
+            <p class="text-[#121416] text-base font-medium leading-normal">Total Revenue</p>
+            <p class="text-[#121416] tracking-light text-2xl font-bold leading-tight">₹{{ '%.2f' % total_revenue }}</p>
+          </div>
+          <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#dde1e3]">
+            <p class="text-[#121416] text-base font-medium leading-normal">Total Profit</p>
+            <p class="text-[#121416] tracking-light text-2xl font-bold leading-tight">₹{{ '%.2f' % total_profit }}</p>
+          </div>
+        </div>
+        {% if visitor_stats %}
+        <h2 class="text-[#121416] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Daily Visitor Stats (Last 7 Days)</h2>
+        <div class="px-4 py-3 @container">
+          <div class="flex overflow-hidden rounded-xl border border-[#dde1e3] bg-white">
+            <table class="flex-1">
+              <thead>
+                <tr class="bg-white">
+                  <th class="table-3031a7df-6ba4-43af-8209-57d6cb76c497-column-120 px-4 py-3 text-left text-[#121416] w-[400px] text-sm font-medium leading-normal">Date</th>
+                  <th class="table-3031a7df-6ba4-43af-8209-57d6cb76c497-column-240 px-4 py-3 text-left text-[#121416] w-[400px] text-sm font-medium leading-normal">Visitor Count</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for stat in visitor_stats %}
+                <tr class="border-t border-t-[#dde1e3]">
+                  <td class="table-3031a7df-6ba4-43af-8209-57d6cb76c497-column-120 h-[72px] px-4 py-2 w-[400px] text-[#6a7681] text-sm font-normal leading-normal">{{ stat.date }}</td>
+                  <td class="table-3031a7df-6ba4-43af-8209-57d6cb76c497-column-240 h-[72px] px-4 py-2 w-[400px] text-[#6a7681] text-sm font-normal leading-normal">{{ stat.count }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <style>
+            @container(max-width:120px){.table-3031a7df-6ba4-43af-8209-57d6cb76c497-column-120{display: none;}}
+            @container(max-width:240px){.table-3031a7df-6ba4-43af-8209-57d6cb76c497-column-240{display: none;}}
+          </style>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

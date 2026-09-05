@@ -1,0 +1,576 @@
+{% extends "base.html" %}
+
+{% block title %} Home Page {% endblock %}
+
+{% block content %}
+<style>
+    .bg-slate-50 {
+        background-color: #f8fafc;
+    }
+
+    .shadow-lg {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .rounded-xl {
+        border-radius: 1rem;
+    }
+
+    .hover\:bg-red-700:hover {
+        background-color: #c53030;
+    }
+
+    .hover\:text-red-500:hover {
+        color: #ef4444;
+    }
+
+    .border-b-red-600 {
+        border-bottom-color: #dc2626;
+    }
+
+    .text-red-600 {
+        color: #dc2626;
+    }
+
+    .modern-gradient {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    }
+
+    .header-gradient {
+        background: linear-gradient(to right, #ffffff, #f9fafb);
+    }
+
+    .welcome-card-gradient {
+        background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+    }
+</style>
+
+<body class="modern-gradient" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+    <div class="relative flex size-full min-h-screen flex-col group/design-root overflow-x-hidden">
+        <div class="layout-container flex h-full grow flex-col">
+
+            <main class="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-40 flex flex-1 justify-center py-8">
+                <div class="layout-content-container flex flex-col max-w-screen-xl flex-1 w-full">
+                    <div class="welcome-card-gradient shadow-xl rounded-2xl p-6 sm:p-8 mb-8 flex items-center gap-6">
+                        <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-20 border-2 border-slate-300 shadow-md"
+                            style='background-image: url("https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg");'>
+                        </div>
+                        <div>
+                            <h1 class="text-slate-900 text-4xl font-bold leading-tight tracking-tight">Hello,
+                                {{current_user.username}}!
+                            </h1>
+                            <p class="text-slate-600 text-lg font-normal leading-relaxed mt-1">Welcome back to your
+                                Dashboard.</p>
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-wrap justify-between items-center gap-4 p-4 mb-6 border-b border-slate-200 pb-6">
+                        <div class="flex flex-col gap-1">
+                            <h2 class="text-slate-900 text-3xl font-semibold leading-tight">Dashboard</h2>
+                            <p class="text-slate-600 text-base font-normal leading-normal">Manage your listings, track
+                                sales, and view purchases.</p>
+                        </div>
+                        <div class="flex gap-2 flex-wrap">
+                            <!-- Create New Listing Button -->
+                            <a href="/sell">
+                                <button
+                                    class="flex items-center gap-2.5 min-w-[84px] max-w-[480px] cursor-pointer justify-center overflow-hidden rounded-xl h-11 px-5 bg-red-600 text-white text-base font-semibold leading-normal tracking-[0.015em] hover:bg-red-700 transition-colors duration-200 shadow-sm hover:shadow-md">
+                                    <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round"
+                                        stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <line x1="12" x2="12" y1="5" y2="19"></line>
+                                        <line x1="5" x2="19" y1="12" y2="12"></line>
+                                    </svg>
+                                    <span>Create New Listing</span>
+                                </button>
+                            </a>
+                    
+                            <!-- Create a Demand Button -->
+                            <a href="/demand">
+                                <button
+                                    class="flex items-center gap-2.5 min-w-[84px] max-w-[480px] cursor-pointer justify-center overflow-hidden rounded-xl h-11 px-5 bg-blue-600 text-white text-base font-semibold leading-normal tracking-[0.015em] hover:bg-blue-700 transition-colors duration-200 shadow-sm hover:shadow-md">
+                                    <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round"
+                                        stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 5v14M5 12h14"></path>
+                                    </svg>
+                                    <span>Create a Demand</span>
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mb-8">
+                        <div class="flex border-b border-slate-300 px-4 gap-6 sm:gap-10 overflow-x-auto">
+                            <a class="flex flex-col items-center justify-center border-b-[3px] border-b-red-600 text-red-600 pb-3.5 pt-4.5 whitespace-nowrap"
+                                href="#active-listings">
+                                <p class="text-base font-semibold leading-normal tracking-[0.015em]">Active Listings</p>
+                            </a>
+                            <a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-slate-600 hover:text-red-600 hover:border-b-red-500 pb-3.5 pt-4.5 whitespace-nowrap transition-colors duration-200"
+                                href="#pending-assurance">
+                                <p class="text-base font-semibold leading-normal tracking-[0.015em]">Pending Assurance
+                                </p>
+                            </a>
+                            <a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-slate-600 hover:text-red-600 hover:border-b-red-500 pb-3.5 pt-4.5 whitespace-nowrap transition-colors duration-200"
+                                href="#miscellaneous">
+                                <p class="text-base font-semibold leading-normal tracking-[0.015em]">Pending Approval
+                                </p>
+                            </a>
+                            <a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-slate-600 hover:text-red-600 hover:border-b-red-500 pb-3.5 pt-4.5 whitespace-nowrap transition-colors duration-200"
+                                href="#sold">
+                                <p class="text-base font-semibold leading-normal tracking-[0.015em]">Sold Listings</p>
+                            </a>
+                            <a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-slate-600 hover:text-red-600 hover:border-b-red-500 pb-3.5 pt-4.5 whitespace-nowrap transition-colors duration-200"
+                                href="#purchases">
+                                <p class="text-base font-semibold leading-normal tracking-[0.015em]">My Purchases</p>
+                            </a>
+
+                        </div>
+                    </div>
+                    <div class="bg-white shadow-xl rounded-2xl p-6 sm:p-8 @container mb-10">
+                        <h2 class="text-slate-900 text-2xl font-semibold leading-tight tracking-[-0.01em] px-2 pb-5 pt-2"
+                            id="active-listings">
+                            Active Listings</h2>
+                        <div class="overflow-x-auto">
+                            <table class="w-full min-w-[640px]">
+                                <thead class="border-b border-slate-200">
+                                    <tr class="bg-slate-100">
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 w-20 text-sm font-medium uppercase tracking-wider">
+                                            Item</th>
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 text-sm font-medium uppercase tracking-wider">
+                                            Name</th>
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 w-36 text-sm font-medium uppercase tracking-wider">
+                                            Price</th>
+
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 w-36 text-sm font-medium uppercase tracking-wider">
+                                            Category</th>
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 w-36 text-sm font-medium uppercase tracking-wider">
+                                            Status</th>
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 w-36 text-sm font-medium uppercase tracking-wider">
+                                            Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200">
+                                    {% if items %}
+                                    {% for item in items %}
+                                    {% set path = item.pic_file_path.split(',')[0] %}
+                                    <tr>
+                                        <td class="px-5 py-4 whitespace-nowrap">
+                                            <img src="{{ path}}"
+                                                alt="Uploaded image preview"
+                                                class="w-12 h-12 object-contain rounded-lg border border-slate-200" />
+                                        </td>
+                                        <td class="px-5 py-4 whitespace-nowrap text-slate-800 text-base font-medium">
+                                            {{ item.name }}</td>
+                                        <td class="px-5 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3.5 py-1.5 rounded-full text-base font-semibold bg-green-100 text-green-800">₹{{item.price}}</span>
+                                        </td>
+                                        <td class="px-5 py-4 whitespace-nowrap text-slate-800 text-base font-medium">
+                                            {{ item.category }}</td>
+                                        <td class="px-5 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-sky-100 text-sky-800">Available</span>
+                                        </td>
+                                        <td class="px-5 py-4 whitespace-nowrap text-base font-medium">
+                                            <a class="text-red-600 hover:text-red-800 transition-colors duration-200"
+                                                href="{{ url_for('delete_item', item_id=item.id) }}">delete</a>
+                                            <span class="text-slate-400 mx-1.5">|</span>
+                                            <a class="text-slate-500 hover:text-slate-700 transition-colors duration-200"
+                                                href="#">View</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+
+                                    <tr>
+                                        <td class="text-center py-10 px-6" colspan="6">
+                                            <div class="flex flex-col items-center justify-center">
+                                                <svg class="w-16 h-16 text-slate-400 mb-4" fill="none"
+                                                    stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                        stroke-linecap="round" stroke-linejoin="round"></path>
+                                                    <path
+                                                        d="M21.151 19.151L18.828 16.828m2.323-2.323L16.828 18.828M3.849 19.151L6.172 16.828M3.849 4.849L6.172 7.172"
+                                                        stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                                <p class="text-slate-500 text-lg font-medium">Sorry, nothing here!</p>
+                                                <p class="text-slate-400 text-sm mt-1">There are currently no items
+                                                    Listed.</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+
+
+                            </table>
+                        </div>
+                    </div>
+                    <div class="bg-white shadow-xl rounded-2xl p-6 sm:p-8 @container mb-10">
+                        <h2 class="text-slate-900 text-2xl font-semibold leading-tight tracking-[-0.01em] px-2 pb-5 pt-2"
+                            id="pending-assurance">
+                            Items Pending Assurance</h2>
+                        <div class="overflow-x-auto">
+                            <table class="w-full min-w-[640px]">
+                                <thead class="border-b border-slate-200">
+                                    <tr class="bg-slate-100">
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 w-20 text-sm font-medium uppercase tracking-wider">
+                                            Item</th>
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 text-sm font-medium uppercase tracking-wider">
+                                            Name</th>
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 w-36 text-sm font-medium uppercase tracking-wider">
+                                            Price</th>
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 text-sm font-medium uppercase tracking-wider">
+                                            Category</th>
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 w-44 text-sm font-medium uppercase tracking-wider">
+                                            Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200">
+                                    {% if assure_items %}
+                                    {% for item in assure_items %}
+                                    {% set path = item.pic_file_path.split(',')[0] %}
+                                    <tr>
+                                        <td class="px-5 py-4 whitespace-nowrap">
+                                            <img src="{{ path}}"
+                                                alt="Uploaded image preview"
+                                                class="w-12 h-12 object-contain rounded-lg border border-slate-200" />
+
+
+                                        </td>
+                                        <td class="px-5 py-4 whitespace-nowrap text-slate-800 text-base font-medium">
+                                            {{ item.name }}</td>
+                                        <td class="px-5 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3.5 py-1.5 rounded-full text-base font-semibold bg-green-100 text-green-800">₹{{item.price}}</span>
+                                        </td>
+                                        <td class="px-5 py-4 whitespace-nowrap text-slate-800 text-base font-medium">
+                                            {{ item.category }}</td>
+                                        <td class="px-5 py-4 whitespace-nowrap text-base font-medium">
+                                            <a class="text-red-600 hover:text-red-800 transition-colors duration-200"
+                                                href="#">Edit</a>
+                                            <span class="text-slate-400 mx-1.5">|</span>
+                                            <a class="text-slate-500 hover:text-slate-700 transition-colors duration-200"
+                                                href="#">View</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+
+                                    <tr>
+                                        <td class="text-center py-10 px-6" colspan="5">
+                                            <div class="flex flex-col items-center justify-center">
+                                                <svg class="w-16 h-16 text-slate-400 mb-4" fill="none"
+                                                    stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                        stroke-linecap="round" stroke-linejoin="round"></path>
+                                                    <path
+                                                        d="M21.151 19.151L18.828 16.828m2.323-2.323L16.828 18.828M3.849 19.151L6.172 16.828M3.849 4.849L6.172 7.172"
+                                                        stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                                <p class="text-slate-500 text-lg font-medium">Sorry, nothing here!</p>
+                                                <p class="text-slate-400 text-sm mt-1">There are currently no items
+                                                    pending assurance.</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="bg-white shadow-xl rounded-2xl p-6 sm:p-8 @container mb-10">
+                        <h2 class="text-slate-900 text-2xl font-semibold leading-tight tracking-[-0.01em] px-2 pb-5 pt-2"
+                            id="miscellaneous">
+                            Miscellaneous Items Pending Approval</h2>
+                        <div class="overflow-x-auto">
+                            <table class="w-full min-w-[640px]">
+                                <thead class="border-b border-slate-200">
+                                    <tr class="bg-slate-100">
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 w-20 text-sm font-medium uppercase tracking-wider">
+                                            Item</th>
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 text-sm font-medium uppercase tracking-wider">
+                                            Name</th>
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 w-36 text-sm font-medium uppercase tracking-wider">
+                                            Original Price</th>
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 w-36 text-sm font-medium uppercase tracking-wider">
+                                            Preffered Price</th>
+
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 w-48 text-sm font-medium uppercase tracking-wider">
+                                            Status</th>
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 w-48 text-sm font-medium uppercase tracking-wider">
+                                            Reason for Rejection</th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200">
+                                    {% if misc_items %}
+                                    {% for item in misc_items %}
+                                    {% set path = item.pic_file_path.split(',')[0] %}
+                                    <tr>
+                                        <td class="px-5 py-4 whitespace-nowrap">
+                                            <img src="{{ path}}"
+                                                alt="Uploaded image preview"
+                                                class="w-12 h-12 object-contain rounded-lg border border-slate-200" />
+
+
+                                        </td>
+                                        <td class="px-5 py-4 whitespace-nowrap text-slate-800 text-base font-medium">
+                                            {{ item.name }}</td>
+                                        <td class="px-5 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3.5 py-1.5 rounded-full text-base font-semibold bg-green-100 text-green-800">₹{{item.og_price}}</span>
+                                        </td>
+                                        <td class="px-5 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3.5 py-1.5 rounded-full text-base font-semibold bg-green-100 text-green-800">₹{{item.price}}</span>
+                                        </td>
+                                        {% if item.status == 'Pending' %}
+                                        <td class="px-5 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">Approval
+                                                awaited</span>
+                                        </td>
+                                        {%elif item.status== 'Rejected' %}
+                                        <td class="px-5 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">Rejected</span>
+                                        </td>
+                                        {%else %}
+                                        <td class="px-5 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">Approved</span>
+                                        </td>
+
+                                        {% endif %}
+                                        <td class="px-5 py-4 whitespace-nowrap text-slate-700 text-base">
+                                            {{ item.reason}}</td>
+
+
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+
+                                    <tr>
+                                        <td class="text-center py-10 px-6" colspan="6">
+                                            <div class="flex flex-col items-center justify-center">
+                                                <svg class="w-16 h-16 text-slate-400 mb-4" fill="none"
+                                                    stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                        stroke-linecap="round" stroke-linejoin="round"></path>
+                                                    <path
+                                                        d="M21.151 19.151L18.828 16.828m2.323-2.323L16.828 18.828M3.849 19.151L6.172 16.828M3.849 4.849L6.172 7.172"
+                                                        stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                                <p class="text-slate-500 text-lg font-medium">Sorry, nothing here!</p>
+                                                <p class="text-slate-400 text-sm mt-1">No pending approvals!.</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="bg-white shadow-xl rounded-2xl p-6 sm:p-8 @container mb-10">
+                        <h2 class="text-slate-900 text-2xl font-semibold leading-tight tracking-[-0.01em] px-2 pb-5 pt-2"
+                            id="sold">
+                            Sold Listings</h2>
+                        <div class="overflow-x-auto">
+                            <table class="w-full min-w-[640px]">
+                                <thead class="border-b border-slate-200">
+                                    <tr class="bg-slate-100">
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 w-20 text-sm font-medium uppercase tracking-wider">
+                                            Item</th>
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 text-sm font-medium uppercase tracking-wider">
+                                            Name</th>
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 w-36 text-sm font-medium uppercase tracking-wider">
+                                            Price</th>
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 text-sm font-medium uppercase tracking-wider">
+                                            Status</th>
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 w-44 text-sm font-medium uppercase tracking-wider">
+                                            Date Sold</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200">
+                                    {% if sold_items %}
+                                    {% for item in sold_items %}
+                                    {% set path = item.pic_file_path.split(',')[0] %}
+                                    <tr>
+                                        <td class="px-5 py-4 whitespace-nowrap">
+                                            <img src="{{ path}}"
+                                                alt="Uploaded image preview"
+                                                class="w-12 h-12 object-contain rounded-lg border border-slate-200" />
+
+
+                                        </td>
+                                        <td class="px-5 py-4 whitespace-nowrap text-slate-800 text-base font-medium">
+                                            {{ item.name }}</td>
+                                        <td class="px-5 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3.5 py-1.5 rounded-full text-base font-semibold bg-green-100 text-green-800">₹{{item.price}}</span>
+                                        </td>
+                                        {% if item.status == 'Pending' %}
+                                        <td class="px-5 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">Pending</span>
+                                        </td>
+                                        {% elif item.status == 'pickup' %}
+                                        <td class="px-5 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">Out for Pickup</span>
+                                        </td>
+                                        {%else %}
+                                        <td class="px-5 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">Sold</span>
+                                        </td>
+                                        {% endif %}
+                                        <td class="px-5 py-4 whitespace-nowrap text-slate-700 text-base">
+                                            {{ item.created_at.strftime('%B %d, %Y') }}</td>
+
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+
+                                    <tr>
+                                        <td class="text-center py-10 px-6" colspan="5">
+                                            <div class="flex flex-col items-center justify-center">
+                                                <svg class="w-16 h-16 text-slate-400 mb-4" fill="none"
+                                                    stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                        stroke-linecap="round" stroke-linejoin="round"></path>
+                                                    <path
+                                                        d="M21.151 19.151L18.828 16.828m2.323-2.323L16.828 18.828M3.849 19.151L6.172 16.828M3.849 4.849L6.172 7.172"
+                                                        stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                                <p class="text-slate-500 text-lg font-medium">Sorry, nothing here!</p>
+                                                <p class="text-slate-400 text-sm mt-1">No sales yet!.</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="bg-white shadow-xl rounded-2xl p-6 sm:p-8 @container">
+                        <h2 class="text-slate-900 text-2xl font-semibold leading-tight tracking-[-0.01em] px-2 pb-5 pt-2"
+                            id="purchases">
+                            My Purchases</h2>
+                        <div class="overflow-x-auto">
+                            <table class="w-full min-w-[700px]">
+                                <thead class="border-b border-slate-200">
+                                    <tr class="bg-slate-100">
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 w-20 text-sm font-medium uppercase tracking-wider">
+                                            Item</th>
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 text-sm font-medium uppercase tracking-wider">
+                                            Name</th>
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 w-36 text-sm font-medium uppercase tracking-wider">
+                                            Price</th>
+
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 w-36 text-sm font-medium uppercase tracking-wider">
+                                            Status</th>
+                                        <th
+                                            class="px-5 py-4 text-left text-slate-600 w-48 text-sm font-medium uppercase tracking-wider">
+                                            Date Purchased</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200">
+                                    {% if pur_items %}
+                                    {% for item in pur_items %}
+                                    {% set path = item.pic_file_path.split(',')[0] %}
+                                    <tr>
+                                        <td class="px-5 py-4 whitespace-nowrap">
+                                            <img src="{{ path}}"
+                                                alt="Uploaded image preview"
+                                                class="w-12 h-12 object-contain rounded-lg border border-slate-200" />
+
+
+                                        </td>
+                                        <td class="px-5 py-4 whitespace-nowrap text-slate-800 text-base font-medium">
+                                            {{ item.name }}</td>
+                                        <td class="px-5 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3.5 py-1.5 rounded-full text-base font-semibold bg-green-100 text-green-800">₹{{item.purchase_price}}</span>
+                                        </td>
+                                        {% if item.status == 'Pending' %}
+                                        <td class="px-5 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">Delivery
+                                                Pending</span>
+                                        </td>
+                                        {%else %}
+                                        <td class="px-5 py-4 whitespace-nowrap">
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">Delivered</span>
+                                        </td>
+                                        {% endif %}
+                                        <td class="px-5 py-4 whitespace-nowrap text-slate-700 text-base">
+                                            {{ item.purchase_date.strftime('%B %d, %Y') }}</td>
+
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+
+                                    <tr>
+                                        <td class="text-center py-10 px-6" colspan="5">
+                                            <div class="flex flex-col items-center justify-center">
+                                                <svg class="w-16 h-16 text-slate-400 mb-4" fill="none"
+                                                    stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                        stroke-linecap="round" stroke-linejoin="round"></path>
+                                                    <path
+                                                        d="M21.151 19.151L18.828 16.828m2.323-2.323L16.828 18.828M3.849 19.151L6.172 16.828M3.849 4.849L6.172 7.172"
+                                                        stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                                <p class="text-slate-500 text-lg font-medium">Sorry, nothing here!</p>
+                                                <p class="text-slate-400 text-sm mt-1">No purchases yet!.</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+        </div>
+    </div>
+</body>
+{%endblock%}

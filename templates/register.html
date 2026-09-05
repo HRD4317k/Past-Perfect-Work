@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %} Home Page {% endblock %}
+
+{% block content %}
+
+
+
+
+<body>
+    <div class="flex flex-1 justify-center py-10 bg-gray-50">
+        <div class="layout-content-container flex flex-col w-full max-w-lg p-8 bg-white shadow-lg rounded-xl">
+            <img alt="Welcome Image" class="mx-auto mb-6 h-24 w-24 rounded-full object-cover opacity-80"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRkcJ0C9eXb_eOZjJ4UyA5zFEvrEmPkuDziFk87HwUf2ZgFWCblpSUFAlrFGItZAnh_nQiXT0jSPpIMCYe_vJ5U2QLAe3KRSh5sP4Zc95dOaL_-kZq9zAVDfX99G-nPy-r3ts5jn0RDZwduAbAgI0B6RK2vHP5C2T8nCSVvRSju-OKK2fltSr40NxRAqHTQo8LSRfHoFvCjGBaqcrgK8iJSFjOxPNh307Kl-Be36XpmQSGpsLpPx8v72HOsBDcRYKleCzk78c99V5r" />
+            <h2 class="text-gray-900 text-3xl font-bold leading-tight text-center mb-8">Create Your Account</h2>
+            <div class="space-y-6">
+                <form method="POST" enctype="multipart/form-data">
+                    {{form.hidden_tag()}}
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1" for="name">Name</label>
+                        {{ form.username(class_="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#38e07b] border border-gray-300 bg-white focus:border-[#38e07b] h-12 placeholder:text-gray-400 px-4 text-base font-normal leading-normal") }}
+                        {% if form.username.errors %}
+                        <div class="text-red-500 text-sm mt-1">
+                            {% for error in form.username.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div><br>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1" for="email">Email</label>
+                        {{ form.email(class_="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#38e07b] border border-gray-300 bg-white focus:border-[#38e07b] h-12 placeholder:text-gray-400 px-4 text-base font-normal leading-normal") }}
+                        {% if form.email.errors %}
+                        <div class="text-red-500 text-sm mt-1">
+                            {% for error in form.email.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                    </div><br>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1" for="password">Password</label>
+                        {{ form.password(class_="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#38e07b] border border-gray-300 bg-white focus:border-[#38e07b] h-12 placeholder:text-gray-400 px-4 text-base font-normal leading-normal") }}
+                        {% if form.password.errors %}
+                        <div class="text-red-500 text-sm mt-1">
+                            {% for error in form.password.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div><br>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1" for="college">College</label>
+                        {{ form.college(class_="form-select flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#38e07b] border border-gray-300 bg-white focus:border-[#38e07b] h-12 bg-[image:--select-button-svg] placeholder:text-gray-400 px-4 text-base font-normal leading-normal appearance-none") }}
+                        <!-- <select
+                            class="form-select flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#38e07b] border border-gray-300 bg-white focus:border-[#38e07b] h-12 bg-[image:--select-button-svg] placeholder:text-gray-400 px-4 text-base font-normal leading-normal appearance-none"
+                            id="college">
+                            <option class="text-gray-400" disabled="" selected="" value="">Select your college
+                            </option>
+                            <option value="kgp">IIT Kharagpur</option>
+                            <option value="bhu">IIT Varanasi</option>
+
+                        </select> -->
+                    </div><br>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1" for="mobile">Mobile</label>
+                        {{ form.mobile_no(class_="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#38e07b] border border-gray-300 bg-white focus:border-[#38e07b] h-12 placeholder:text-gray-400 px-4 text-base font-normal leading-normal") }}
+                       
+                    </div><br>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1" for="address">Address</label>
+                        {{ form.address(class_="form-textarea flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#38e07b] border border-gray-300 bg-white focus:border-[#38e07b] min-h-28 placeholder:text-gray-400 p-4 text-base font-normal leading-normal") }}
+                
+                        
+                    </div><br>
+                    <div class="pt-4">
+                        {{form.submit(class_="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-[#38e07b] text-white text-base font-semibold leading-normal tracking-wide hover:bg-opacity-90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#38e07b]")}}
+                        <!-- <button
+                            class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-[#38e07b] text-white text-base font-semibold leading-normal tracking-wide hover:bg-opacity-90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#38e07b]">
+                            <span class="truncate">Create Account</span>
+                        </button> -->
+                    </div>
+                    </form>
+                    <div class="text-center mt-4">
+                        <p class="text-sm text-gray-600">
+                            Already have an account?
+                            <a class="font-medium text-[#38e07b] hover:text-[#2db864] transition-colors duration-200"
+                                href="/login">Login</a>
+                        </p>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+{%endblock%}

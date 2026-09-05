@@ -1,0 +1,102 @@
+{%extends "base.html"%}
+{%block content%}
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#17cf17",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#112111",
+                        "content-light": "#ffffff",
+                        "content-dark": "#1a2e1a",
+                        "text-light": "#0f172a",
+                        "text-dark": "#e2e8f0",
+                        "subtext-light": "#64748b",
+                        "subtext-dark": "#94a3b8",
+                        "border-light": "#e2e8f0",
+                        "border-dark": "#334155"
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                      'soft': '0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .table-cell-content {
+          display: flex;
+          flex-direction: column;
+        }
+    </style>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="flex flex-col min-h-screen">
+<main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="mb-8">
+<h2 class="text-3xl font-bold text-text-light dark:text-text-dark">Hello {{current_user.username}},</h2>
+<p class="text-lg text-subtext-light dark:text-subtext-dark">the deliveries within {{del_date.strftime('%B %d, %Y')}} are:</p>
+</div>
+<div class="bg-content-light dark:bg-content-dark rounded-lg shadow-soft overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-sm text-left text-text-light dark:text-text-dark">
+<thead class="text-xs text-subtext-light dark:text-subtext-dark uppercase bg-background-light dark:bg-background-dark">
+<tr>
+<th class="px-6 py-3 min-w-[150px]" scope="col">Order Name</th>
+<th class="px-6 py-3 min-w-[250px]" scope="col">Seller Details</th>
+<th class="px-6 py-3 min-w-[250px]" scope="col">Buyer Details</th>
+<th class="px-6 py-3 min-w-[250px]" scope="col">Money to Seller</th>
+<th class="px-6 py-3 min-w-[250px]" scope="col">Money from Buyer</th>
+<th class="px-6 py-3 min-w-[120px]" scope="col">Delivery OTP</th>
+<th class="px-6 py-3 text-center min-w-[180px]" scope="col">Action</th>
+</tr>
+</thead>
+<tbody>
+{%for order in orders%}
+<tr class="border-b border-border-light dark:border-border-dark">
+<td class="px-6 py-4 font-medium text-text-light dark:text-text-dark">{{order['item_name']}}</td>
+<td class="px-6 py-4">
+<div class="table-cell-content">
+<span class="font-semibold">{{order['seller_name']}}</span>
+<span class="text-subtext-light dark:text-subtext-dark">{{order['seller_phone']}}</span>
+<span class="text-subtext-light dark:text-subtext-dark">{{order['seller_address']}}</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="table-cell-content">
+<span class="font-semibold">{{order['buyer_name']}}</span>
+<span class="text-subtext-light dark:text-subtext-dark">{{order['buyer_phone']}}</span>
+<span class="text-subtext-light dark:text-subtext-dark">{{order['buyer_address']}}</span>
+</div>
+</td>
+<td class="px-6 py-4 font-medium text-text-light dark:text-text-dark">₹{{order['money_to_seller']}}</td>
+<td class="px-6 py-4 font-medium text-text-light dark:text-text-dark">₹{{order['money_from_buyer']}}</td>
+<td class="px-6 py-4 font-mono">{{order['otp']}}</td>
+<td class="px-6 py-4 text-center">
+<form action="{{ url_for('mark_delivered', purchase_id=purchase.id) }}" method="POST" style="display:inline;">
+    <button type="submit" class="bg-primary/20 hover:bg-primary/30 text-primary font-bold py-2 px-4 rounded transition-colors duration-200">
+        Confirm Delivery
+    </button>
+</form>
+</td>
+</tr>
+{%endfor%}
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+</body>
+
+{%endblock%}

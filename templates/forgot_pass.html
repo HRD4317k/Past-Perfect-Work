@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %} Home Page {% endblock %}
+
+{% block content %}
+
+
+    <style>
+        .gradient-bg {
+            background: linear-gradient(180deg, #f0fff4 0%, #e6f7ff 100%);
+        }
+
+        .form-input {
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .form-input:focus {
+            border-color: #38e07b;
+            box-shadow: 0 0 0 3px rgba(56, 224, 123, 0.3);
+            outline: none;
+        }
+
+        .primary-button {
+            background-color: #38e07b;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+        }
+
+        .primary-button:hover {
+            background-color: #2fbf67;
+            transform: translateY(-1px);
+        }
+
+        .primary-button:active {
+            transform: translateY(0px);
+        }
+    </style>
+</head>
+
+<body style='font-family: Manrope, "Noto Sans", sans-serif;'>
+    <div class="relative flex size-full min-h-screen flex-col group/design-root overflow-x-hidden gradient-bg">
+        <div class="layout-container flex h-full grow flex-col items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
+            <div class="w-full max-w-md space-y-8">
+                <div class="text-center">
+                    <svg class="mx-auto h-12 w-auto text-[#38e07b]" fill="none" viewBox="0 0 48 48"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_6_319)">
+                            <path
+                                d="M8.57829 8.57829C5.52816 11.6284 3.451 15.5145 2.60947 19.7452C1.76794 23.9758 2.19984 28.361 3.85056 32.3462C5.50128 36.3314 8.29667 39.7376 11.8832 42.134C15.4698 44.5305 19.6865 45.8096 24 45.8096C28.3135 45.8096 32.5302 44.5305 36.1168 42.134C39.7033 39.7375 42.4987 36.3314 44.1494 32.3462C45.8002 28.361 46.2321 23.9758 45.3905 19.7452C44.549 15.5145 42.4718 11.6284 39.4217 8.57829L24 24L8.57829 8.57829Z"
+                                fill="currentColor"></path>
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_6_319">
+                                <rect fill="white" height="48" width="48"></rect>
+                            </clipPath>
+                        </defs>
+                    </svg>
+                    <h2 class="mt-6 text-3xl font-bold tracking-tight text-[#0e1a13]">Forgot Your Password?</h2>
+                    <p class="mt-2 text-sm text-gray-600">
+                        No worries, we'll send you reset instructions.
+                    </p>
+                </div>
+                <form action="#" class="mt-8 space-y-6" method="POST">
+                    <input name="remember" type="hidden" value="true" />
+                    <div class="rounded-md shadow-sm -space-y-px">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1 ml-1" for="email-address">Email
+                                address</label>
+                            <input autocomplete="email"
+                                class="form-input relative block w-full appearance-none rounded-md border px-3 py-3 text-gray-900 placeholder-gray-500 focus:z-10 sm:text-sm"
+                                id="email-address" name="email" placeholder="Enter your email" required=""
+                                type="email" />
+                        </div>
+                        <div class="pt-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1 ml-1" for="otp">OTP</label>
+                            <input
+                                class="form-input relative block w-full appearance-none rounded-md border px-3 py-3 text-gray-900 placeholder-gray-500 focus:z-10 sm:text-sm"
+                                id="otp" name="otp" placeholder="Enter OTP sent to your email" required=""
+                                type="text" />
+                        </div>
+                        <div class="pt-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1 ml-1" for="new-password">New
+                                Password</label>
+                            <input autocomplete="new-password"
+                                class="form-input relative block w-full appearance-none rounded-md border px-3 py-3 text-gray-900 placeholder-gray-500 focus:z-10 sm:text-sm"
+                                id="new-password" name="new-password" placeholder="Enter new password" required=""
+                                type="password" />
+                        </div>
+                        <div class="pt-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1 ml-1"
+                                for="confirm-password">Confirm Password</label>
+                            <input autocomplete="new-password"
+                                class="form-input relative block w-full appearance-none rounded-md border px-3 py-3 text-gray-900 placeholder-gray-500 focus:z-10 sm:text-sm"
+                                id="confirm-password" name="confirm-password" placeholder="Confirm new password"
+                                required="" type="password" />
+                        </div>
+                    </div>
+                    <div>
+                        <button
+                            class="primary-button group relative flex w-full justify-center rounded-md border border-transparent py-3 px-4 text-base font-semibold text-white focus:outline-none focus:ring-2 focus:ring-[#38e07b] focus:ring-offset-2"
+                            type="submit">
+                            Change Password
+                        </button>
+                    </div>
+                </form>
+                <p class="mt-6 text-center text-sm text-gray-500">
+                    Remember your password?
+                    <a class="font-medium text-[#38e07b] hover:text-[#2fbf67]" href="#"> Sign in </a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+{%endblock%}

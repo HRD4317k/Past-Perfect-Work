@@ -1,0 +1,430 @@
+{% extends "base.html" %}
+
+{% block title %} Shop Page {% endblock %}
+
+{% block content %}
+<style>
+  .filter-button {
+    transition: all 0.3s ease-in-out;
+  }
+  .filter-button:hover {
+    transform: scale(1.05);
+  }
+  .filter-sidebar {
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(100%);
+  }
+  .filter-sidebar.open {
+    transform: translateX(0);
+  }
+  .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+  }
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  .card.assured-card:hover {
+    box-shadow: 0 10px 20px rgba(16, 237, 104, 0.2);
+  }
+  .card:not(.assured-card):hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  .assured-badge {
+    background-color: #e6fff2;
+    color: #00875a;
+    border: 1px solid #00875a;
+  }
+  .slider-thumb::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #4f46e5;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+  .slider-thumb::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #4f46e5;
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+  }
+  .category-button.active {
+    background-color: #4f46e5;
+    color: white;
+  }
+  .sort-dropdown {
+    display: none;
+  }
+  .sort-dropdown.open {
+    display: block;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>
+
+<div class="container px-2 py-2 w-full">
+
+  <!-- 🔹 Sticky Header -->
+  <div class="sticky top-20 bg-white z-50 shadow-sm">
+    <!-- Search + Filter + Sort -->
+    <div class="flex items-center space-x-2 py-2">
+      <div class="relative flex-grow">
+        <form method="GET" action="{{ url_for('search') }}">
+          <input
+            class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm"
+            name="q" placeholder="Search for items, brands, or sellers" type="text" />
+          <!-- ✅ fixed alignment -->
+          <button type="submit"
+            class="absolute left-3 top-1/2 -translate-y-1/2 transform text-green-500">
+            <span class="material-icons">search</span>
+          </button>
+        </form>
+      </div>
+
+      <button
+        class="filter-button flex items-center px-4 py-2.5 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 shadow-sm"
+        id="filterBtn">
+        <span class="material-icons text-lg mr-2">filter_list</span>
+        <span class="hidden sm:inline">Filter</span>
+      </button>
+
+      <div class="relative">
+        <button
+          class="flex items-center px-4 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 shadow-sm"
+          id="sortBtn">
+          <span class="material-icons text-lg mr-2">sort</span>
+          <span class="hidden sm:inline">Sort By</span>
+          <span class="material-icons text-lg ml-1" id="sortCaret">arrow_drop_down</span>
+        </button>
+        <div class="sort-dropdown absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-30"
+          id="sortDropdown">
+          <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-sort="price-asc" href="#"
+            id="sortPriceAsc">Price: Low to High</a>
+          <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-sort="price-desc" href="#"
+            id="sortPriceDesc">Price: High to Low</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Categories Row -->
+    <div class="overflow-x-auto pb-2 no-scrollbar">
+      <div class="flex space-x-3">
+        <button
+            class="category-button inline-block px-3 py-2 rounded-md text-sm font-medium border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 whitespace-nowrap"
+            data-category="All">All</button>
+          <button
+            class="category-button inline-block px-3 py-2 rounded-md text-sm font-medium border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 whitespace-nowrap"
+            data-category="Cycles">Cycles</button>
+          <button
+            class="category-button inline-block px-3 py-2 rounded-md text-sm font-medium border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 whitespace-nowrap"
+            data-category="Mattress">Mattress</button>
+          <button
+            class="category-button inline-block px-3 py-2 rounded-md text-sm font-medium border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 whitespace-nowrap"
+            data-category="Electronics">Electronics</button>
+          <button
+            class="category-button inline-block px-3 py-2 rounded-md text-sm font-medium border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 whitespace-nowrap"
+            data-category="Appliances & Kitchenware">Appliances & Kitchenware</button>
+          <button
+            class="category-button inline-block px-3 py-2 rounded-md text-sm font-medium border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 whitespace-nowrap"
+            data-category="Books">Books</button>
+          <button
+            class="category-button inline-block px-3 py-2 rounded-md text-sm font-medium border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 whitespace-nowrap"
+            data-category="Watches">Watches</button>
+          <button
+            class="category-button inline-block px-3 py-2 rounded-md text-sm font-medium border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 whitespace-nowrap"
+            data-category="Hostel Essentials">Hostel Essentials</button>
+          <button
+            class="category-button inline-block px-3 py-2 rounded-md text-sm font-medium border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 whitespace-nowrap"
+            data-category="Fitness & Sports">Fitness & Sports</button>
+          <button
+            class="category-button inline-block px-3 py-2 rounded-md text-sm font-medium border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 whitespace-nowrap"
+            data-category="Personal Accessories">Personal Accessories</button>
+          <button
+            class="category-button inline-block px-3 py-2 rounded-md text-sm font-medium border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 whitespace-nowrap"
+            data-category="Academic Accessories">Academic Accessories</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="flex justify-between items-center mb-6 mt-4">
+    {%if query%}
+    <h2 class="text-2xl font-semibold text-gray-800" id="cat-head">Search Results for "{{ query }}"</h2>
+    {% else %}
+    <h2 class="text-2xl font-semibold text-gray-800" id="cat-head">All Items</h2>
+    {% endif %}
+  </div>
+
+  <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2" id="productGrid">
+    {% for item in items %}
+    <a class="card bg-white rounded-xl shadow-lg overflow-hidden block {% if item.assured == 'Assured' %}assured-card{% endif %}"
+      data-assured="{{ item.assured }}" data-price="{{ item.price }}" data-category="{{ item.category }}"
+      data-sub="{{ item.sub_cat }}" href="{{ url_for('buy', item_id=item.id) }}">
+      {% set path = item.pic_file_path.split(',')[0] %}
+      <img alt="{{ item.name }}" class="w-full h-48 object-cover"
+        src="{{ path}}" />
+
+      <div class="p-4">
+        {% if item.assured == 'Assured' %}
+        <span class="assured-badge inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mb-2">
+          <span class="material-icons text-sm mr-1">verified</span> Quality Assured
+        </span>
+        {% endif %}
+        <h3 class="font-semibold text-lg text-gray-800 mb-1">{{ item.name }}</h3>
+        <div class="flex items-baseline mb-1">
+          <p class="text-xl font-bold text-indigo-600 mr-2">₹{{ item.price }}</p>
+          {% if item.og_price and item.og_price > item.price %}
+          <p class="text-sm text-gray-500 line-through">₹{{ item.og_price }}</p>
+          {% endif %}
+        </div>
+        <p class="text-xs text-gray-600">{{item.sub_cat}}</p>
+      </div>
+    </a>
+    {% endfor %}
+
+    <div id="noItemsMessage"
+      class="hidden flex flex-col items-center justify-center text-center text-slate-500 col-span-full">
+      <svg class="w-16 h-16 text-slate-400 mb-4" fill="none" stroke="currentColor" stroke-width="1"
+        viewBox="0 0 24 24">
+        <path d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          stroke-linecap="round" stroke-linejoin="round"></path>
+        <path
+          d="M21.151 19.151L18.828 16.828m2.323-2.323L16.828 18.828M3.849 19.151L6.172 16.828M3.849 4.849L6.172 7.172"
+          stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+      <p class="text-lg font-medium">Sorry, nothing here!</p>
+      <p class="text-slate-400 text-sm mt-1">There are currently no items in this category.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Filter Sidebar -->
+<div class="filter-sidebar fixed top-0 right-0 h-full w-80 bg-white shadow-xl p-6 z-50 overflow-y-auto"
+  id="filterSidebar">
+  <div class="flex justify-between items-center mb-6">
+    <h3 class="text-xl font-semibold text-gray-800">Filters</h3>
+    <button class="text-gray-500 hover:text-gray-700" id="closeFilterBtn">
+      <span class="material-icons">close</span>
+    </button>
+  </div>
+  <div class="mb-6">
+    <h4 class="font-medium text-gray-700 mb-2">Price Range</h4>
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-600" for="minPrice">Min Price: ₹<span
+          id="minPriceValue">{{min_price}}</span></label>
+      <input class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider-thumb" id="minPrice"
+        max="{{max_price}}" min="{{min_price}}" type="range" value="{{min_price}}" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-600" for="maxPrice">Max Price: ₹<span
+          id="maxPriceValue">{{max_price}}</span></label>
+      <input class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider-thumb" id="maxPrice"
+        max="{{max_price}}" min="{{min_price}}" type="range" value="{{max_price}}" />
+    </div>
+  </div>
+  <div class="mb-6">
+    <h4 class="font-medium text-gray-700 mb-3">Assurance</h4>
+    <div class="space-y-2">
+      <div>
+        <input checked class="form-radio h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
+          id="allAssurance" name="assurance" type="radio" value="all" />
+        <label class="ml-2 text-sm text-gray-700" for="allAssurance">All</label>
+      </div>
+      <div>
+        <input class="form-radio h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500" id="assured"
+          name="assurance" type="radio" value="Assured" />
+        <label class="ml-2 text-sm text-gray-700" for="assured">Assured Only</label>
+      </div>
+      <div>
+        <input class="form-radio h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500" id="non-assured"
+          name="assurance" type="radio" value="Not Assured" />
+        <label class="ml-2 text-sm text-gray-700" for="non-assured">Non-Assured Only</label>
+      </div>
+    </div>
+  </div>
+  <button
+    class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150 ease-in-out"
+    id="applyFiltersBtn">Apply Filters</button>
+</div>
+<div class="fixed inset-0 bg-black opacity-50 z-40 hidden" id="filterOverlay"></div>  <script>
+    const filterBtn = document.getElementById('filterBtn');
+    const closeFilterBtn = document.getElementById('closeFilterBtn');
+    const filterSidebar = document.getElementById('filterSidebar');
+    const filterOverlay = document.getElementById('filterOverlay');
+    const minPriceSlider = document.getElementById('minPrice');
+    const maxPriceSlider = document.getElementById('maxPrice');
+    const minPriceValue = document.getElementById('minPriceValue');
+    const maxPriceValue = document.getElementById('maxPriceValue');
+    const applyFiltersBtn = document.getElementById('applyFiltersBtn');
+    const productGrid = document.getElementById('productGrid');
+    const sortBtn = document.getElementById('sortBtn');
+    const sortDropdown = document.getElementById('sortDropdown');
+    const sortCaret = document.getElementById('sortCaret');
+    const sortPriceAsc = document.getElementById('sortPriceAsc');
+    const sortPriceDesc = document.getElementById('sortPriceDesc');
+    const categoryButtons = document.querySelectorAll('.category-button');
+    const cathead = document.getElementById('cat-head');
+    const noItemsMessage = document.getElementById('noItemsMessage');
+
+    let productCards = Array.from(productGrid.getElementsByClassName('card'));
+    let categoryFilter = 'All';
+
+
+
+
+
+    // ---------------- Modal Handlers ----------------
+    function openFilter() {
+      filterSidebar.classList.add('open');
+      filterOverlay.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeFilter() {
+      filterSidebar.classList.remove('open');
+      filterOverlay.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    filterBtn.addEventListener('click', openFilter);
+    closeFilterBtn.addEventListener('click', closeFilter);
+    filterOverlay.addEventListener('click', closeFilter);
+
+    // ---------------- Slider Sync ----------------
+    minPriceSlider.oninput = function () {
+      minPriceValue.textContent = this.value;
+      if (parseInt(this.value) > parseInt(maxPriceSlider.value)) {
+        maxPriceSlider.value = this.value;
+        maxPriceValue.textContent = this.value;
+      }
+    };
+    maxPriceSlider.oninput = function () {
+      maxPriceValue.textContent = this.value;
+      if (parseInt(this.value) < parseInt(minPriceSlider.value)) {
+        minPriceSlider.value = this.value;
+        minPriceValue.textContent = this.value;
+      }
+    };
+
+    // ---------------- Category Buttons ----------------
+    categoryButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        categoryButtons.forEach(btn => {
+          btn.classList.remove('active', 'bg-indigo-600', 'text-white');
+          btn.classList.add('border-gray-300', 'text-gray-700', 'bg-white', 'hover:bg-gray-50');
+        });
+        button.classList.add('active', 'bg-indigo-600', 'text-white');
+        button.classList.remove('border-gray-300', 'text-gray-700', 'bg-white', 'hover:bg-gray-50');
+
+        categoryFilter = button.getAttribute('data-category');
+        cathead.textContent = categoryFilter === 'All' ? 'All Items' : `${categoryFilter}`;
+        applyFiltersAndSort();
+      });
+    });
+
+    // ---------------- Filtering and Sorting ----------------
+    function applyFiltersAndSort() {
+      const minPrice = parseInt(minPriceSlider.value);
+      const maxPrice = parseInt(maxPriceSlider.value);
+      const assuranceFilter = document.querySelector('input[name="assurance"]:checked').value;
+
+      let filteredCards = productCards.filter(card => {
+        const cardPrice = parseInt(card.dataset.price);
+        const cardAssured = card.dataset.assured === 'Assured';
+        const cardCategory = card.dataset.category;
+
+        const priceMatch = cardPrice >= minPrice && cardPrice <= maxPrice;
+
+        const assuranceMatch =
+          assuranceFilter === 'all' ||
+          (assuranceFilter === 'Assured' && cardAssured) ||
+          (assuranceFilter === 'Not Assured' && !cardAssured);
+
+        const categoryMatch = categoryFilter === 'All' || cardCategory === categoryFilter;
+
+        return priceMatch && assuranceMatch && categoryMatch;
+      });
+
+      // Sort logic
+      const currentSort = sortBtn.dataset.currentSort;
+      if (currentSort === 'price-asc') {
+        filteredCards.sort((a, b) => parseInt(a.dataset.price) - parseInt(b.dataset.price));
+      } else if (currentSort === 'price-desc') {
+        filteredCards.sort((a, b) => parseInt(b.dataset.price) - parseInt(a.dataset.price));
+      }
+
+      // Render filtered cards
+      productGrid.innerHTML = '';
+
+      if (filteredCards.length === 0) {
+        noItemsMessage.classList.remove('hidden');
+        productGrid.appendChild(noItemsMessage);
+
+      }
+      else {
+        noItemsMessage.classList.add('hidden');
+
+        filteredCards.forEach(card => {
+          card.style.display = 'block';
+          card.style.opacity = '1';
+          productGrid.appendChild(card);
+        });
+
+        productCards.forEach(card => {
+          if (!filteredCards.includes(card)) {
+            card.style.opacity = '0';
+            setTimeout(() => {
+              card.style.display = 'none';
+            }, 300);
+          }
+        });
+      }
+      closeFilter();
+    }
+
+    applyFiltersBtn.addEventListener('click', applyFiltersAndSort);
+
+    // ---------------- Sort Button ----------------
+    sortBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      sortDropdown.classList.toggle('open');
+      sortCaret.textContent = sortDropdown.classList.contains('open') ? 'arrow_drop_up' : 'arrow_drop_down';
+    });
+
+    window.addEventListener('click', () => {
+      if (sortDropdown.classList.contains('open')) {
+        sortDropdown.classList.remove('open');
+        sortCaret.textContent = 'arrow_drop_down';
+      }
+    });
+
+    [sortPriceAsc, sortPriceDesc].forEach(sortOption => {
+      sortOption.addEventListener('click', function (e) {
+        e.preventDefault();
+        const sortBy = this.dataset.sort;
+        sortBtn.dataset.currentSort = sortBy;
+        document.querySelectorAll('#sortDropdown a').forEach(a => a.classList.remove('font-semibold', 'text-indigo-600'));
+        this.classList.add('font-semibold', 'text-indigo-600');
+        applyFiltersAndSort();
+        sortDropdown.classList.remove('open');
+        sortCaret.textContent = 'arrow_drop_down';
+      });
+    });
+
+    
+  </script>
+
+
+
+
+{%endblock%}
+
+
+

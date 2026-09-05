@@ -1,0 +1,131 @@
+{% extends "admin_base.html" %}
+{% block title %}Assured Pending Items{% endblock %}
+{% block content %}
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+<link
+  rel="stylesheet"
+  as="style"
+  onload="this.rel='stylesheet'"
+  href="https://fonts.googleapis.com/css2?display=swap&family=Inter%3Awght%40400%3B500%3B700%3B900&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+<div class="relative flex size-full min-h-screen flex-col bg-neutral-50 group/design-root overflow-x-hidden" style='font-family: Inter, "Noto Sans", sans-serif;'>
+  <div class="layout-container flex h-full grow flex-col">
+    <div class="px-4 sm:px-6 lg:px-40 flex flex-1 justify-center py-5">
+      <div class="layout-content-container flex flex-col w-full max-w-[1200px] flex-1">
+        <div class="flex flex-wrap justify-between gap-3 p-4">
+          <p class="text-[#141414] tracking-tight text-[32px] font-bold leading-tight min-w-72">Assured Pending Items</p>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="px-4 py-3">
+                <div class="bg-{{ 'green-100 text-green-800' if category == 'success' else 'red-100 text-red-800' }} rounded-lg p-4 mb-4 flex justify-between items-center">
+                  {{ message }}
+                  <button type="button" class="text-current opacity-50 hover:opacity-100" onclick="this.parentElement.style.display='none';">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M128,24A104,104,0,1,0,232,128,104.13,104.13,0,0,0,128,24Zm12,57.66,30.35,30.34a8,8,0,0,1-11.31,11.31L128,92.68l-30.34,30.35a8,8,0,0,1-11.31-11.31L116.69,81.34a8,8,0,0,1,11.31,0Z"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <div class="px-4 py-3 @container">
+          <div class="relative overflow-x-auto rounded-xl border border-[#dbdbdb] bg-neutral-50">
+            <table class="w-full min-w-[1000px] table-auto">
+              <thead>
+                <tr class="bg-neutral-50">
+                  <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">Item ID</th>
+                  <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">Image</th>
+                  <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">Product Name</th>
+                  <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">Price</th>
+                  <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">Seller Name</th>
+                  <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">Seller Contact</th>
+                  <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">Seller Address</th>
+                  <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">Video Link</th>
+                  <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in items %}
+                  <tr class="border-t border-t-[#dbdbdb]">
+                    <td class="h-[72px] px-4 py-2 text-neutral-500 text-sm font-normal leading-normal">{{ item.id }}</td>
+                    <td class="h-[72px] px-4 py-2 text-sm font-normal leading-normal">
+                      {% set first_image = item.pic_file_path.split(',')[0] if item.pic_file_path else 'default_image.jpg' %}
+                      <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10" style='background-image: url("{{ first_image }}");'></div>
+                    </td>
+                    <td class="h-[72px] px-4 py-2 text-neutral-500 text-sm font-normal leading-normal">{{ item.name }}</td>
+                    <td class="h-[72px] px-4 py-2 text-neutral-500 text-sm font-normal leading-normal">₹{{ '%.2f' % item.price }}</td>
+                    <td class="h-[72px] px-4 py-2 text-neutral-500 text-sm font-normal leading-normal">{{ item.user.username }}</td>
+                    <td class="h-[72px] px-4 py-2 text-neutral-500 text-sm font-normal leading-normal">{{ item.user.mobile_no }}</td>
+                    <td class="h-[72px] px-4 py-2 text-neutral-500 text-sm font-normal leading-normal">{{ item.user.address or 'N/A' }}</td>
+                    <td class="h-[72px] px-4 py-2 text-neutral-500 text-sm font-normal leading-normal">
+                      <form action="{{ url_for('approve_assured', item_id=item.id) }}" method="POST" class="flex items-center gap-2">
+                        <div class="flex-1">
+                          <label for="url-{{ item.id }}" class="sr-only">Product URL</label>
+                          <input type="text" id="url-{{ item.id }}" name="url" class="w-full rounded-md border border-[#dbdbdb] px-3 py-2 text-sm text-[#141414] focus:outline-none focus:ring-2 focus:ring-[#1a73e8]" placeholder="Enter product URL" required>
+                        </div>
+                      </form>
+                    </td>
+                    <td class="h-[72px] px-4 py-2 text-neutral-500 text-sm font-bold leading-normal tracking-[0.015em]">
+                      <form action="{{ url_for('approve_assured', item_id=item.id) }}" method="POST" style="display:inline;">
+                        <input type="hidden" name="url" id="hidden-url-{{ item.id }}" value="">
+                        <button type="submit" class="cursor-pointer rounded-full h-8 bg-[#2f855a] text-[#141414] text-sm font-bold leading-normal tracking-[0.015em] px-4 min-w-[120px]" onclick="this.form.querySelector('input[name=url]').value = document.getElementById('url-{{ item.id }}').value; return confirm('Approve this assured item?');">Approve</button>
+                      </form>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <style>
+            /* Ensure table cells don't wrap text unnecessarily */
+            th, td {
+              white-space: nowrap;
+            }
+            /* Custom scrollbar styles for better appearance */
+            .overflow-x-auto::-webkit-scrollbar {
+              height: 8px;
+            }
+            .overflow-x-auto::-webkit-scrollbar-track {
+              background: #f1f1f1;
+              border-radius: 4px;
+            }
+            .overflow-x-auto::-webkit-scrollbar-thumb {
+              background: #888;
+              border-radius: 4px;
+            }
+            .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+              background: #555;
+            }
+            /* Responsive column widths */
+            @media (max-width: 640px) {
+              .min-w-[1000px] {
+                min-width: 800px;
+              }
+            }
+          </style>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  // Sync input value to hidden input on form submission
+  document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', function() {
+      const itemId = this.action.match(/item_id=(\d+)/)?.[1];
+      if (itemId) {
+        const urlInput = document.getElementById(`url-${itemId}`);
+        const hiddenInput = document.getElementById(`hidden-url-${itemId}`);
+        if (urlInput && hiddenInput) {
+          hiddenInput.value = urlInput.value;
+        }
+      }
+    });
+  });
+</script>
+{% endblock %}

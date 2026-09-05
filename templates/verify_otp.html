@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %} Home Page {% endblock %}
+
+{% block content %}
+
+
+<body>
+    <div class="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden"
+        style='font-family: Manrope, "Noto Sans", sans-serif;'>
+        <div class="layout-container flex h-full grow flex-col">
+
+            <div class="flex flex-1 items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
+                <div class="w-full max-w-md space-y-8 rounded-xl border border-slate-200 bg-white p-8 shadow-lg">
+                    <div class="text-center">
+                        <svg class="icon icon-tabler icons-tabler-outline icon-tabler-shield-lock mx-auto h-12 w-12 text-[#38e07b]"
+                            fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 0h24v24H0z" fill="none" stroke="none"></path>
+                            <path
+                                d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3">
+                            </path>
+                            <path d="M12 11m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                            <path d="M12 12l0 2.5"></path>
+                        </svg>
+                        <h2 class="mt-6 text-3xl font-extrabold tracking-tight text-slate-900">Verify your code</h2>
+                        <p class="mt-2 text-slate-600">Please enter the 6-digit code we sent to <span
+                                class="font-medium text-slate-700">{{email}}</span>.</p>
+                    </div>
+                    <form class="mt-8 space-y-6" method="POST">
+                        <fieldset class="flex justify-center gap-2 sm:gap-3">
+                            <input
+                                class="h-14 w-12 rounded-md border border-slate-300 bg-white text-center text-xl font-medium text-slate-900 shadow-sm transition-colors focus:border-[#38e07b] focus:ring-1 focus:ring-[#38e07b] [appearance:textfield] [&amp;::-webkit-inner-spin-button]:appearance-none [&amp;::-webkit-outer-spin-button]:appearance-none"
+                                name="dig1" inputmode="numeric" maxlength="1"
+                                oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+                                onkeydown="javascript:(event.key==='Backspace'&amp;&amp;this.value===''&amp;&amp;this.previousElementSibling&amp;&amp;(this.previousElementSibling.focus()))||(event.key==='ArrowLeft'&amp;&amp;this.previousElementSibling&amp;&amp;this.previousElementSibling.focus())||(event.key==='ArrowRight'&amp;&amp;this.nextElementSibling&amp;&amp;this.nextElementSibling.focus());"
+                                onkeyup="javascript:event.key.match(/^\d$/)&amp;&amp;((this.value.length&gt;0&amp;&amp;((this.nextElementSibling&amp;&amp;(this.nextElementSibling.focus())),(this.value=this.value[0]))));"
+                                pattern="\d*" type="text" />
+                            <input
+                                class="h-14 w-12 rounded-md border border-slate-300 bg-white text-center text-xl font-medium text-slate-900 shadow-sm transition-colors focus:border-[#38e07b] focus:ring-1 focus:ring-[#38e07b] [appearance:textfield] [&amp;::-webkit-inner-spin-button]:appearance-none [&amp;::-webkit-outer-spin-button]:appearance-none"
+                                name="dig2" inputmode="numeric" maxlength="1"
+                                oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+                                onkeydown="javascript:(event.key==='Backspace'&amp;&amp;this.value===''&amp;&amp;this.previousElementSibling&amp;&amp;(this.previousElementSibling.focus()))||(event.key==='ArrowLeft'&amp;&amp;this.previousElementSibling&amp;&amp;this.previousElementSibling.focus())||(event.key==='ArrowRight'&amp;&amp;this.nextElementSibling&amp;&amp;this.nextElementSibling.focus());"
+                                onkeyup="javascript:event.key.match(/^\d$/)&amp;&amp;((this.value.length&gt;0&amp;&amp;((this.nextElementSibling&amp;&amp;(this.nextElementSibling.focus())),(this.value=this.value[0]))));"
+                                pattern="\d*" type="text" />
+                            <input
+                                class="h-14 w-12 rounded-md border border-slate-300 bg-white text-center text-xl font-medium text-slate-900 shadow-sm transition-colors focus:border-[#38e07b] focus:ring-1 focus:ring-[#38e07b] [appearance:textfield] [&amp;::-webkit-inner-spin-button]:appearance-none [&amp;::-webkit-outer-spin-button]:appearance-none"
+                                name="dig3" inputmode="numeric" maxlength="1"
+                                oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+                                onkeydown="javascript:(event.key==='Backspace'&amp;&amp;this.value===''&amp;&amp;this.previousElementSibling&amp;&amp;(this.previousElementSibling.focus()))||(event.key==='ArrowLeft'&amp;&amp;this.previousElementSibling&amp;&amp;this.previousElementSibling.focus())||(event.key==='ArrowRight'&amp;&amp;this.nextElementSibling&amp;&amp;this.nextElementSibling.focus());"
+                                onkeyup="javascript:event.key.match(/^\d$/)&amp;&amp;((this.value.length&gt;0&amp;&amp;((this.nextElementSibling&amp;&amp;(this.nextElementSibling.focus())),(this.value=this.value[0]))));"
+                                pattern="\d*" type="text" />
+                            <input
+                                class="h-14 w-12 rounded-md border border-slate-300 bg-white text-center text-xl font-medium text-slate-900 shadow-sm transition-colors focus:border-[#38e07b] focus:ring-1 focus:ring-[#38e07b] [appearance:textfield] [&amp;::-webkit-inner-spin-button]:appearance-none [&amp;::-webkit-outer-spin-button]:appearance-none"
+                                name="dig4" inputmode="numeric" maxlength="1"
+                                oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+                                onkeydown="javascript:(event.key==='Backspace'&amp;&amp;this.value===''&amp;&amp;this.previousElementSibling&amp;&amp;(this.previousElementSibling.focus()))||(event.key==='ArrowLeft'&amp;&amp;this.previousElementSibling&amp;&amp;this.previousElementSibling.focus())||(event.key==='ArrowRight'&amp;&amp;this.nextElementSibling&amp;&amp;this.nextElementSibling.focus());"
+                                onkeyup="javascript:event.key.match(/^\d$/)&amp;&amp;((this.value.length&gt;0&amp;&amp;((this.nextElementSibling&amp;&amp;(this.nextElementSibling.focus())),(this.value=this.value[0]))));"
+                                pattern="\d*" type="text" />
+                            <input
+                                class="h-14 w-12 rounded-md border border-slate-300 bg-white text-center text-xl font-medium text-slate-900 shadow-sm transition-colors focus:border-[#38e07b] focus:ring-1 focus:ring-[#38e07b] [appearance:textfield] [&amp;::-webkit-inner-spin-button]:appearance-none [&amp;::-webkit-outer-spin-button]:appearance-none"
+                                name="dig5" inputmode="numeric" maxlength="1"
+                                oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+                                onkeydown="javascript:(event.key==='Backspace'&amp;&amp;this.value===''&amp;&amp;this.previousElementSibling&amp;&amp;(this.previousElementSibling.focus()))||(event.key==='ArrowLeft'&amp;&amp;this.previousElementSibling&amp;&amp;this.previousElementSibling.focus())||(event.key==='ArrowRight'&amp;&amp;this.nextElementSibling&amp;&amp;this.nextElementSibling.focus());"
+                                onkeyup="javascript:event.key.match(/^\d$/)&amp;&amp;((this.value.length&gt;0&amp;&amp;((this.nextElementSibling&amp;&amp;(this.nextElementSibling.focus())),(this.value=this.value[0]))));"
+                                pattern="\d*" type="text" />
+                            <input
+                                class="h-14 w-12 rounded-md border border-slate-300 bg-white text-center text-xl font-medium text-slate-900 shadow-sm transition-colors focus:border-[#38e07b] focus:ring-1 focus:ring-[#38e07b] [appearance:textfield] [&amp;::-webkit-inner-spin-button]:appearance-none [&amp;::-webkit-outer-spin-button]:appearance-none"
+                                name="dig6" inputmode="numeric" maxlength="1"
+                                oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+                                onkeydown="javascript:(event.key==='Backspace'&amp;&amp;this.value===''&amp;&amp;this.previousElementSibling&amp;&amp;(this.previousElementSibling.focus()))||(event.key==='ArrowLeft'&amp;&amp;this.previousElementSibling&amp;&amp;this.previousElementSibling.focus())||(event.key==='ArrowRight'&amp;&amp;this.nextElementSibling&amp;&amp;this.nextElementSibling.focus());"
+                                onkeyup="javascript:event.key.match(/^\d$/)&amp;&amp;((this.value.length&gt;0&amp;&amp;((this.nextElementSibling&amp;&amp;(this.nextElementSibling.focus())),(this.value=this.value[0]))));"
+                                pattern="\d*" type="text" />
+                        </fieldset>
+                        <div>
+                            <button
+                                class="group relative flex w-full justify-center rounded-md border border-transparent bg-[#38e07b] px-4 py-3 text-sm font-semibold text-slate-900 shadow-sm hover:bg-[#2fbc69] focus:outline-none focus:ring-2 focus:ring-[#38e07b] focus:ring-offset-2 focus:ring-offset-slate-50 transition-colors"
+                                type="submit">
+                                Verify
+                            </button>
+                        </div>
+                    </form>
+                    <!-- <p class="mt-6 text-center text-sm text-slate-600">
+                        Didn't receive the code?
+                        <a class="font-medium text-[#38e07b] hover:text-[#2fbc69] hover:underline" href="#">Resend
+                            code</a>
+                    </p> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+{%endblock%}

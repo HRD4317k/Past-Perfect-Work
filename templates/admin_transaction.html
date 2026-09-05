@@ -1,0 +1,24 @@
+{% extends "admin_base.html" %}
+{% block title %}Admin Transactions{% endblock %}
+
+{% block content %}
+    <h1>Transaction Details</h1>
+    <table border="1">
+        <tr>
+            <th>Transaction ID</th>
+            <th>Amount (₹)</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Date</th>
+        </tr>
+        {% for transaction in transactions %}
+        <tr>
+            <td>{{ transaction.transaction_id }}</td>
+            <td>{{ transaction.amount }}</td>
+            <td>{{ transaction.name }}</td>
+            <td>{{ transaction.phone }}</td>
+            <td>{{ transaction.date }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

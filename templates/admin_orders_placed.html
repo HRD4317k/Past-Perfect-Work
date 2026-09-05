@@ -1,0 +1,140 @@
+{% extends "admin_base.html" %}
+{% block title %}Orders Placed{% endblock %}
+{% block content %}
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+<link
+  rel="stylesheet"
+  as="style"
+  onload="this.rel='stylesheet'"
+  href="https://fonts.googleapis.com/css2?display=swap&family=Inter%3Awght%40400%3B500%3B700%3B900&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+<div class="relative flex size-full min-h-screen flex-col bg-neutral-50 group/design-root overflow-x-hidden" style='font-family: Inter, "Noto Sans", sans-serif;'>
+  <div class="layout-container flex h-full grow flex-col">
+    <div class="px-4 sm:px-6 lg:px-40 flex flex-1 justify-center py-5">
+      <div class="layout-content-container flex flex-col w-full max-w-[1200px] flex-1">
+        <div class="flex flex-wrap justify-between gap-3 p-4">
+          <p class="text-[#141414] tracking-tight text-[32px] font-bold leading-tight min-w-72">Orders Placed</p>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+             <div class="px-4 py-3">
+            <div class="bg-{{ 'green-100 text-green-800' if category == 'success' else 'red-100 text-red-800' if category == 'danger' else 'blue-100 text-blue-800' if category == 'info' else 'yellow-100 text-yellow-800' }} rounded-lg p-4 mb-4 flex justify-between items-center">
+              {{ message }}
+              <button type="button" class="text-current opacity-50 hover:opacity-100" onclick="this.parentElement.style.display='none';">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+                  <path d="M128,24A104,104,0,1,0,232,128,104.13,104.13,0,0,0,128,24Zm12,57.66,30.35,30.34a8,8,0,0,1-11.31,11.31L128,92.68l-30.34,30.35a8,8,0,0,1-11.31-11.31L116.69,81.34a8,8,0,0,1,11.31,0Z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <!-- College Filter Form -->
+        <form method="POST" action="{{ url_for('admin_orders_placed') }}" class="p-4">
+          <label for="college_filter" class="mr-2 text-[#121416] text-sm font-medium">Filter by College:</label>
+          <select name="college_filter" id="college_filter" class="border rounded px-3 py-2 text-sm text-[#6a7681]">
+            <option value="all" {% if session.college_filter == 'all' %}selected{% endif %}>All Colleges</option>
+            {% for college_id, college_name in colleges %}
+              <option value="{{ college_id }}" {% if session.college_filter == college_id %}selected{% endif %}>{{ college_name }}</option>
+            {% endfor %}
+          </select>
+          <button type="submit" class="bg-[#34d399] text-[#121416] rounded px-4 py-2 ml-2 text-sm font-bold">Apply Filter</button>
+        </form>
+        {% if not orders %}
+          <p class="px-4 py-3 text-neutral-500 text-sm font-normal leading-normal">No orders placed yet.</p>
+        {% else %}
+          <div class="px-4 py-3 @container">
+            <div class="relative overflow-x-auto rounded-xl border border-[#dbdbdb] bg-neutral-50">
+              <table class="w-full min-w-[1000px] table-auto">
+                <thead>
+                  <tr class="bg-neutral-50">
+                    <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">Item Name</th>
+                    <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">Buyer Information</th>
+                    <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">Seller Information</th>
+                    <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">Financial Details</th>
+                    <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">Mark as Delivered</th>
+                    <th class="px-4 py-3 text-left text-[#141414] text-sm font-medium leading-normal">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for order in orders %}
+                    <tr class="border-t border-t-[#dde1e3]">
+                      <td class="table-963f8359-2a63-4eee-b86f-cd2842e7b043-column-120 h-[72px] px-4 py-2 w-[400px] text-[#6a7681] text-sm font-normal leading-normal">
+                        {{ order.item_name }}
+                      </td>
+                      <td class="table-963f8359-2a63-4eee-b86f-cd2842e7b043-column-240 h-[72px] px-4 py-2 w-[400px] text-[#6a7681] text-sm font-normal leading-normal">
+                        Buyer: {{ order.buyer_name }}<br>Phone: {{ order.buyer_phone }}<br>Email: {{ order.buyer_email }}<br>Address: {{ order.buyer_address }}
+                      </td>
+                      <td class="table-963f8359-2a63-4eee-b86f-cd2842e7b043-column-360 h-[72px] px-4 py-2 w-[400px] text-[#6a7681] text-sm font-normal leading-normal">
+                        Seller: {{ order.seller_name }}<br>Phone: {{ order.seller_phone }}<br>Address: {{ order.seller_address }}
+                      </td>
+                      <td class="table-963f8359-2a63-4eee-b86f-cd2842e7b043-column-480 h-[72px] px-4 py-2 w-[400px] text-[#6a7681] text-sm font-normal leading-normal">
+                        Money Paid by Buyer: ₹{{ '%.2f' % order.money_paid_by_buyer }}<br>
+                        Money Paid to Seller: ₹{{ '%.2f' % order.money_to_seller }}<br>
+                        Delivery Fee: ₹{{ '%.2f' % order.delivery_fee }}<br>
+                        Assurance Fee: ₹{{ '%.2f' % order.assurance_fee }}<br>
+                        Platform Fee: ₹{{ '%.2f' % order.platform_fee }}<br>
+                      </td>
+                      <td class="table-963f8359-2a63-4eee-b86f-cd2842e7b043-column-600 h-[72px] px-4 py-2 w-60 text-[#6a7681] text-sm font-bold leading-normal tracking-[0.015em]">
+                        {% if order.status == 'Pending' %}
+                          <form method="POST" action="{{ url_for('send_delivery_otp', purchase_id=order.purchase_id) }}" style="display:inline;">
+                            <button type="submit" class="cursor-pointer rounded-full h-8 bg-[#34d399] text-[#121416] text-sm font-bold leading-normal tracking-[0.015em] px-2.5">Send OTP</button>
+                          </form>
+                        {% elif order.status == 'Out for Delivery' %}
+                          <form method="POST" action="{{ url_for('admin_mark_delivered', purchase_id=order.purchase_id) }}" style="display:inline;">
+                            <button type="submit" class="cursor-pointer rounded-full h-8 bg-[#34d399] text-[#121416] text-sm font-bold leading-normal tracking-[0.015em] px-2.5">Delivered</button>
+                          </form>
+                        {% else %}
+                          {{ order.status }}
+                        {% endif %}
+                      </td>
+                      <td class="table-963f8359-2a63-4eee-b86f-cd2842e7b043-column-720 h-[72px] px-4 py-2 w-60 text-[#6a7681] text-sm font-bold leading-normal tracking-[0.015em]">
+                        {% if current_user.email in admin_emails %}
+                          <form method="POST" action="{{ url_for('admin_delete_order', purchase_id=order.purchase_id) }}" style="display:inline;">
+                            <button type="submit" class="cursor-pointer rounded-full h-8 bg-[#e53e3e] text-[#121416] text-sm font-bold leading-normal tracking-[0.015em] px-2.5" onclick="return confirm('Are you sure you want to delete order for {{ order.item_name }}? This cannot be undone.');">Delete</button>
+                          </form>
+                        {% endif %}
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <style>
+              /* Ensure table cells don't wrap text unnecessarily */
+              th, td {
+                white-space: nowrap;
+              }
+              /* Custom scrollbar styles for better appearance */
+              .overflow-x-auto::-webkit-scrollbar {
+                height: 8px;
+              }
+              .overflow-x-auto::-webkit-scrollbar-track {
+                background: #f1f1f1;
+                border-radius: 4px;
+              }
+              .overflow-x-auto::-webkit-scrollbar-thumb {
+                background: #888;
+                border-radius: 4px;
+              }
+              .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+                background: #555;
+              }
+              /* Responsive column widths */
+              @media (max-width: 640px) {
+                .min-w-[1000px] {
+                  min-width: 800px;
+                }
+              }
+            </style>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

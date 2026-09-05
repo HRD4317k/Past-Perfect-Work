@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %} Home Page {% endblock %}
+
+{% block content %}
+
+
+<body>
+    <div class="relative flex size-full min-h-screen flex-col bg-[#f8fbfc] group/design-root overflow-x-hidden"
+        style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+        <div class="layout-container flex h-full grow flex-col">
+
+            <div class="px-4 sm:px-10 lg:px-40 flex flex-1 justify-center py-5">
+                <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+                    <div class="@container">
+                        <div class="@[480px]:px-4 @[480px]:py-3">
+                            <div class="w-full bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden bg-[#f8fbfc] @[480px]:rounded-xl min-h-[218px]"
+                                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDBBCVOQrb97WqPIxYrIV9UNzwO2M_ckFFzqTatmiXWp17ImqJ5cxqJCm8uDNuXl1_B7KMfLOLsZHBZUk5y_Swb0nLZfgAj8hnjZAkAD1bRbuybAf-W4F1v3ibb7a6egXiQ09nBxBC0jtnxw4EvHPYc6KVar7z_8UD1ussvWmle48MuscSzBqWTFYKIVebGALCQr1y5VSArT2TRpr2qqo5GOWwExHtc7PXKfmjHMylJScNptPEXDwHz3fQDo77zX6NSTW2BZQy1xRNi");'>
+                            </div>
+                        </div>
+                    </div>
+                    <h2
+                        class="text-[#0d181c] tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">
+                        Welcome back</h2>
+                        <form method="POST" enctype="multipart/form-data">
+                            {{form.hidden_tag()}}
+                    <div class="flex justify-center px-4 py-3">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 w-full max-w-[600px]">
+                                <label
+                                    class="text-[#0d181c] text-base font-medium leading-normal sm:min-w-[80px]">Email</label>
+                                {{ form.email(class_="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0d181c] focus:outline-0 focus:ring-0 border border-[#cee1e9] bg-[#f8fbfc] focus:border-[#cee1e9] h-14 placeholder:text-[#48879d] p-[15px] text-base font-normal leading-normal") }}
+                                {% if form.email.errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {% for error in form.email.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            
+                        </div>
+                    </div>
+                    <div class="flex justify-center px-4 py-3">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 w-full max-w-[600px]">
+                            <label
+                                class="text-[#0d181c] text-base font-medium leading-normal sm:min-w-[80px]">Password</label>
+                            {{ form.password(class_="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#0d181c] focus:outline-0 focus:ring-0 border border-[#cee1e9] bg-[#f8fbfc] focus:border-[#cee1e9] h-14 placeholder:text-[#48879d] p-[15px] text-base font-normal leading-normal") }}
+                            {% if form.password.errors %}
+                            <div class="text-red-500 text-sm mt-1">
+                                {% for error in form.password.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                           
+                        </div>
+                    </div>
+                    <div class="flex px-4 py-3 justify-center">
+                        {{form.submit(class_="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#0795c9] text-[#f8fbfc] text-base font-bold leading-normal tracking-[0.015em]")}}
+                    </div>
+                    </form>
+                    <div
+                        class="flex flex-col sm:flex-row sm:justify-center sm:gap-8 px-4 pt-1 pb-3 space-y-2 sm:space-y-0">
+                        <a href="">
+                            <p
+                                class="text-[#48879d] text-sm font-normal leading-normal text-center underline cursor-pointer">
+                                Forgot password?</p>
+                        </a>
+                        <a href="/register">
+                            <p
+                                class="text-[#48879d] text-sm font-normal leading-normal text-center underline cursor-pointer">
+                                Don't have an account? Sign up</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+{%endblock%}

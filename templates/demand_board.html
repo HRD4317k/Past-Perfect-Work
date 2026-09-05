@@ -1,0 +1,673 @@
+{% extends "base.html" %}
+
+{% block title %} Home Page {% endblock %}
+
+{% block content %}
+<style type="text/tailwindcss">
+  :root {
+      
+        --primary-color: #0c7ff2;
+        --primary-color-hover: #0A6DCE;
+        --secondary-color: #f0f2f5;
+        --text-primary: #111418;
+        --text-secondary: #60758a;
+        --border-color: #dbe0e6;
+      }
+
+  body {
+            font-family: Inter, "Noto Sans", sans-serif;
+          }
+          .active-filter {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+          }
+          .filter-chip:hover {
+            background-color: var(--primary-color-hover);
+            color: white;
+          }
+          .sidebar {
+            transition: transform 0.3s ease-in-out;
+          }
+          .sidebar-open {
+            transform: translateX(90%);
+          }
+          .sidebar-closed {
+            transform: translateX(-100%);
+          }
+          @media (min-width: 1024px) {
+            .sidebar-closed {
+              transform: translateX(0);
+            }
+          }
+          .table th {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+             background-color: #f9fafb;
+          }
+          .sortable-header {
+            cursor: pointer;
+          }
+          .sortable-header .sort-icon {
+            opacity: 0.5;
+            transition: opacity 0.2s ease-in-out;
+          }
+          .sortable-header:hover .sort-icon {
+            opacity: 1;
+          }
+          .sortable-header.sorted-asc .sort-icon,
+          .sortable-header.sorted-desc .sort-icon {
+            opacity: 1;
+          }
+</style>
+
+
+<body class="bg-slate-50">
+  <div class="relative flex size-full min-h-screen flex-col group/design-root overflow-x-hidden">
+    <div class="flex h-full grow flex-col">
+      <main class="flex flex-1 lg:gap-6 lg:p-6 bg-slate-50">
+        <aside id="filterSidebar"
+          class="sidebar sidebar-closed fixed inset-y-0 left-0 z-20 w-72 transform bg-white p-6 shadow-lg overflow-y-auto max-h-screen lg:static lg:shadow-none lg:translate-x-0 lg:block border-r border-[var(--border-color)]">
+
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3 text-[var(--text-primary)]">
+              <h1 class="text-[var(--text-primary)] text-xl font-semibold leading-tight">Filter</h1>
+            </div>
+            <button class="lg:hidden p-1 rounded-md hover:bg-slate-100 text-[var(--text-secondary)]"
+              id="closeSidebarButton">
+              <span class="material-icons-outlined">close</span>
+            </button>
+          </div>
+          <div>
+            <h3 class="text-[var(--text-primary)] text-sm font-medium mb-3">Category</h3>
+            <div class="flex flex-wrap gap-2 mb-6" id="categoryFilters">
+              <button
+                class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[var(--secondary-color)] px-3 py-1 text-xs font-medium text-[var(--text-primary)] transition-colors active-filter"
+                data-category="All">All</button>
+              <button
+                class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[var(--secondary-color)] px-3 py-1 text-xs font-medium text-[var(--text-primary)] transition-colors"
+                data-category="Cycles">Cycles</button>
+              <button
+                class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[var(--secondary-color)] px-3 py-1 text-xs font-medium text-[var(--text-primary)] transition-colors"
+                data-category="Electronics">Electronics</button>
+              <button
+                class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[var(--secondary-color)] px-3 py-1 text-xs font-medium text-[var(--text-primary)] transition-colors"
+                data-category="Hostel Essentials">Hostel Essentials</button>
+              <button
+                class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[var(--secondary-color)] px-3 py-1 text-xs font-medium text-[var(--text-primary)] transition-colors"
+                data-category="Mattress">Mattress</button>
+              <button
+                class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[var(--secondary-color)] px-3 py-1 text-xs font-medium text-[var(--text-primary)] transition-colors"
+                data-category="Watches">Watches</button>
+              <button
+                class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[var(--secondary-color)] px-3 py-1 text-xs font-medium text-[var(--text-primary)] transition-colors"
+                data-category="Books">Books</button>
+              <button
+                class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[var(--secondary-color)] px-3 py-1 text-xs font-medium text-[var(--text-primary)] transition-colors"
+                data-category="Fitness & Sports">Fitness & Sports</button>
+              <button
+                class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[var(--secondary-color)] px-3 py-1 text-xs font-medium text-[var(--text-primary)] transition-colors"
+                data-category="Academic Accessories">Academic Accessories</button>
+              <button
+                class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[var(--secondary-color)] px-3 py-1 text-xs font-medium text-[var(--text-primary)] transition-colors"
+                data-category="Appliances & Kitchenware">Appliances & Kitchenware</button>
+              <button
+                class="filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-2 rounded-full bg-[var(--secondary-color)] px-3 py-1 text-xs font-medium text-[var(--text-primary)] transition-colors"
+                data-category="Personal Accessories">Personal Accessories</button>
+            </div>
+          </div>
+          <div>
+            <h3 class="text-[var(--text-primary)] text-sm font-medium mb-3">Sub Category</h3>
+            <div class="space-y-2" id="subCategoryFilters">
+
+              <!-- Watches -->
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Watches">
+                <input class="sub-category-checkbox" type="checkbox" value="Digital" />
+                <span class="text-[var(--text-secondary)] text-sm">Digital</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Watches">
+                <input class="sub-category-checkbox" type="checkbox" value="Analog" />
+                <span class="text-[var(--text-secondary)] text-sm">Analog</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Watches">
+                <input class="sub-category-checkbox" type="checkbox" value="Smartwatches" />
+                <span class="text-[var(--text-secondary)] text-sm">Smartwatches</span>
+              </label>
+
+              <!-- Fitness & Sports -->
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Fitness & Sports">
+                <input class="sub-category-checkbox" type="checkbox" value="Gym Gear" />
+                <span class="text-[var(--text-secondary)] text-sm">Gym Gear</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Fitness & Sports">
+                <input class="sub-category-checkbox" type="checkbox" value="Balls" />
+                <span class="text-[var(--text-secondary)] text-sm">Balls</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Fitness & Sports">
+                <input class="sub-category-checkbox" type="checkbox" value="Yoga Mat" />
+                <span class="text-[var(--text-secondary)] text-sm">Yoga Mat</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Fitness & Sports">
+                <input class="sub-category-checkbox" type="checkbox" value="Skipping Rope" />
+                <span class="text-[var(--text-secondary)] text-sm">Skipping Rope</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Fitness & Sports">
+                <input class="sub-category-checkbox" type="checkbox" value="Rackets" />
+                <span class="text-[var(--text-secondary)] text-sm">Rackets</span>
+              </label>
+
+              <!-- Hostel Essentials -->
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Hostel Essentials">
+                <input class="sub-category-checkbox" type="checkbox" value="WiFi Router" />
+                <span class="text-[var(--text-secondary)] text-sm">WiFi Router</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Hostel Essentials">
+                <input class="sub-category-checkbox" type="checkbox" value="Umbrella" />
+                <span class="text-[var(--text-secondary)] text-sm">Umbrella</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Hostel Essentials">
+                <input class="sub-category-checkbox" type="checkbox" value="Mosquito Nets/Rackets" />
+                <span class="text-[var(--text-secondary)] text-sm">Mosquito Nets/Rackets</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Hostel Essentials">
+                <input class="sub-category-checkbox" type="checkbox" value="Curtains" />
+                <span class="text-[var(--text-secondary)] text-sm">Curtains</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Hostel Essentials">
+                <input class="sub-category-checkbox" type="checkbox" value="Wooden Chair" />
+                <span class="text-[var(--text-secondary)] text-sm">Wooden Chair</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Hostel Essentials">
+                <input class="sub-category-checkbox" type="checkbox" value="Office Chair" />
+                <span class="text-[var(--text-secondary)] text-sm">Office Chair</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Hostel Essentials">
+                <input class="sub-category-checkbox" type="checkbox" value="Shelves" />
+                <span class="text-[var(--text-secondary)] text-sm">Shelves</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Hostel Essentials">
+                <input class="sub-category-checkbox" type="checkbox" value="Decor" />
+                <span class="text-[var(--text-secondary)] text-sm">Decor</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Hostel Essentials">
+                <input class="sub-category-checkbox" type="checkbox" value="Buckets/Mugs" />
+                <span class="text-[var(--text-secondary)] text-sm">Buckets/Mugs</span>
+              </label>
+
+              <!-- Appliances & Kitchenware -->
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer"
+                data-parent-category="Appliances & Kitchenware">
+                <input class="sub-category-checkbox" type="checkbox" value="Table Fan" />
+                <span class="text-[var(--text-secondary)] text-sm">Table Fan</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer"
+                data-parent-category="Appliances & Kitchenware">
+                <input class="sub-category-checkbox" type="checkbox" value="Cooler" />
+                <span class="text-[var(--text-secondary)] text-sm">Cooler</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer"
+                data-parent-category="Appliances & Kitchenware">
+                <input class="sub-category-checkbox" type="checkbox" value="Utensils/Cutlery" />
+                <span class="text-[var(--text-secondary)] text-sm">Utensils/Cutlery</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer"
+                data-parent-category="Appliances & Kitchenware">
+                <input class="sub-category-checkbox" type="checkbox" value="Washing Machine" />
+                <span class="text-[var(--text-secondary)] text-sm">Washing Machine</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer"
+                data-parent-category="Appliances & Kitchenware">
+                <input class="sub-category-checkbox" type="checkbox" value="Induction" />
+                <span class="text-[var(--text-secondary)] text-sm">Induction</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer"
+                data-parent-category="Appliances & Kitchenware">
+                <input class="sub-category-checkbox" type="checkbox" value="Kettle" />
+                <span class="text-[var(--text-secondary)] text-sm">Kettle</span>
+              </label>
+
+              <!-- Electronics -->
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Electronics">
+                <input class="sub-category-checkbox" type="checkbox" value="Keyboard/Mouse" />
+                <span class="text-[var(--text-secondary)] text-sm">Keyboard/Mouse</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Electronics">
+                <input class="sub-category-checkbox" type="checkbox" value="Writing Pad" />
+                <span class="text-[var(--text-secondary)] text-sm">Writing Pad</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Electronics">
+                <input class="sub-category-checkbox" type="checkbox" value="Kindle" />
+                <span class="text-[var(--text-secondary)] text-sm">Kindle</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Electronics">
+                <input class="sub-category-checkbox" type="checkbox" value="Monitor" />
+                <span class="text-[var(--text-secondary)] text-sm">Monitor</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Electronics">
+                <input class="sub-category-checkbox" type="checkbox" value="USB/LAN Devices" />
+                <span class="text-[var(--text-secondary)] text-sm">USB/LAN Devices</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Electronics">
+                <input class="sub-category-checkbox" type="checkbox" value="Trimmer" />
+                <span class="text-[var(--text-secondary)] text-sm">Trimmer</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Electronics">
+                <input class="sub-category-checkbox" type="checkbox" value="Controller/Consoles" />
+                <span class="text-[var(--text-secondary)] text-sm">Controller/Consoles</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Electronics">
+                <input class="sub-category-checkbox" type="checkbox" value="Extension Cord" />
+                <span class="text-[var(--text-secondary)] text-sm">Extension Cord</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Electronics">
+                <input class="sub-category-checkbox" type="checkbox" value="Earbuds" />
+                <span class="text-[var(--text-secondary)] text-sm">Earbuds</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Electronics">
+                <input class="sub-category-checkbox" type="checkbox" value="Speaker" />
+                <span class="text-[var(--text-secondary)] text-sm">Speaker</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Electronics">
+                <input class="sub-category-checkbox" type="checkbox" value="Mouse" />
+                <span class="text-[var(--text-secondary)] text-sm">Mouse</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Electronics">
+                <input class="sub-category-checkbox" type="checkbox" value="Power Bank" />
+                <span class="text-[var(--text-secondary)] text-sm">Power Bank</span>
+              </label>
+
+              <!-- Academic Accessories -->
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer"
+                data-parent-category="Academic Accessories">
+                <input class="sub-category-checkbox" type="checkbox" value="ED drafter" />
+                <span class="text-[var(--text-secondary)] text-sm">ED drafter</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer"
+                data-parent-category="Academic Accessories">
+                <input class="sub-category-checkbox" type="checkbox" value="Whiteboard" />
+                <span class="text-[var(--text-secondary)] text-sm">Whiteboard</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer"
+                data-parent-category="Academic Accessories">
+                <input class="sub-category-checkbox" type="checkbox" value="Chart Holder" />
+                <span class="text-[var(--text-secondary)] text-sm">Chart Holder</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer"
+                data-parent-category="Academic Accessories">
+                <input class="sub-category-checkbox" type="checkbox" value="Lab Coat" />
+                <span class="text-[var(--text-secondary)] text-sm">Lab Coat</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer"
+                data-parent-category="Academic Accessories">
+                <input class="sub-category-checkbox" type="checkbox" value="Calculator" />
+                <span class="text-[var(--text-secondary)] text-sm">Calculator</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer"
+                data-parent-category="Academic Accessories">
+                <input class="sub-category-checkbox" type="checkbox" value="Laptop_stand" />
+                <span class="text-[var(--text-secondary)] text-sm">Laptop_stand</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer"
+                data-parent-category="Academic Accessories">
+                <input class="sub-category-checkbox" type="checkbox" value="Study Lamp" />
+                <span class="text-[var(--text-secondary)] text-sm">Study Lamp</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer"
+                data-parent-category="Academic Accessories">
+                <input class="sub-category-checkbox" type="checkbox" value="Writing Pad" />
+                <span class="text-[var(--text-secondary)] text-sm">Writing Pad</span>
+              </label>
+
+              <!-- Personal Accessories -->
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer"
+                data-parent-category="Personal Accessories">
+                <input class="sub-category-checkbox" type="checkbox" value="Shoes" />
+                <span class="text-[var(--text-secondary)] text-sm">Shoes</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer"
+                data-parent-category="Personal Accessories">
+                <input class="sub-category-checkbox" type="checkbox" value="Musical Instruments" />
+                <span class="text-[var(--text-secondary)] text-sm">Musical Instruments</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer"
+                data-parent-category="Personal Accessories">
+                <input class="sub-category-checkbox" type="checkbox" value="Belts" />
+                <span class="text-[var(--text-secondary)] text-sm">Belts</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer"
+                data-parent-category="Personal Accessories">
+                <input class="sub-category-checkbox" type="checkbox" value="Bags" />
+                <span class="text-[var(--text-secondary)] text-sm">Bags</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer"
+                data-parent-category="Personal Accessories">
+                <input class="sub-category-checkbox" type="checkbox" value="Umbrella" />
+                <span class="text-[var(--text-secondary)] text-sm">Umbrella</span>
+              </label>
+
+              <!-- Books -->
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Books">
+                <input class="sub-category-checkbox" type="checkbox" value="Novels" />
+                <span class="text-[var(--text-secondary)] text-sm">Novels</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Books">
+                <input class="sub-category-checkbox" type="checkbox" value="Course Books" />
+                <span class="text-[var(--text-secondary)] text-sm">Course Books</span>
+              </label>
+
+              <!-- Mattress -->
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Mattress">
+                <input class="sub-category-checkbox" type="checkbox" value="Cotton" />
+                <span class="text-[var(--text-secondary)] text-sm">Cotton</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Mattress">
+                <input class="sub-category-checkbox" type="checkbox" value="Foam" />
+                <span class="text-[var(--text-secondary)] text-sm">Foam</span>
+              </label>
+
+              <!-- Cycles -->
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Cycles">
+                <input class="sub-category-checkbox" type="checkbox" value="Gear" />
+                <span class="text-[var(--text-secondary)] text-sm">Gear</span>
+              </label>
+              <label class="flex items-center gap-x-2.5 py-1.5 cursor-pointer" data-parent-category="Cycles">
+                <input class="sub-category-checkbox" type="checkbox" value="Gearless" />
+                <span class="text-[var(--text-secondary)] text-sm">Gearless</span>
+              </label>
+
+
+            </div>
+          </div>
+        </aside>
+        <div style="width: 100%; padding: 5px;">
+          {%if demands%}
+          <h2 class="text-2xl font-semibold text-gray-800 mb-6 mt-8">Trending Categories</h2>
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mb-12">
+
+            {%for subcat,count in top_demands%}
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover group relative fade-in delay-300">
+              <!-- <div
+                class="absolute top-4 right-4 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+                Medium Demand</div> -->
+              <img alt="{{subcat}}"
+                class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
+                src="{{img_json[subcat]}}" loading="lazy" />
+              <div class="p-6">
+                <h3 class="text-xl font-semibold text-black mb-2">{{subcat}}</h3>
+                <div class="flex items-center">
+                  <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-1"></span>
+                  <span class="text-xs text-gray-500">{{count}} active demands</span>
+                </div>
+              </div>
+            </div>
+            {%endfor%}
+
+          </div>
+          {%endif%}
+
+
+          <div class="flex-1 bg-white rounded-xl shadow-sm border border-[var(--border-color)] p-6 @container">
+            <div class="flex flex-col @[640px]:flex-row @[640px]:items-center @[640px]:justify-between gap-4 mb-6">
+
+              <div>
+                <h1 class="text-[var(--text-primary)] text-2xl font-semibold">Demand Board</h1>
+                <p class="text-[var(--text-secondary)] text-sm">Analyze item data and demand trends.</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="relative flex-1 @[640px]:flex-initial @[640px]:w-72">
+                  <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <span class="material-icons-outlined text-[var(--text-secondary)] text-xl">search</span>
+                  </div>
+                  <input
+                    class="form-input h-10 w-full min-w-0 flex-1 rounded-lg border border-[var(--border-color)] bg-white px-9 py-2 pl-10 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-secondary)] focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] focus:ring-opacity-50"
+                    id="searchInput" placeholder="Search items..." type="search" />
+                </div>
+                <button
+                  class="lg:hidden flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-[var(--primary-color)] rounded-lg hover:bg-[var(--primary-color-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-opacity-50"
+                  id="openFilterSidebarButton">
+                  <span class="material-icons-outlined text-lg">filter_alt</span>
+                  Filters
+                </button>
+              </div>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 mb-6" id="sortControls">
+              <span class="text-[var(--text-secondary)] text-sm font-medium mr-2">Sort by:</span>
+            </div>
+            <div class="overflow-x-auto rounded-lg border border-[var(--border-color)]">
+              <table class="min-w-full divide-y divide-[var(--border-color)]" id="demandTable">
+                <thead class="bg-slate-50">
+                  <tr>
+                    <th
+                      class="table-column-id px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]"
+                      scope="col">Item ID</th>
+                    <th
+                      class="table-column-name px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]"
+                      scope="col">Name</th>
+                    <th
+                      class="table-column-category px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]"
+                      scope="col">Category</th>
+                    <th
+                      class="table-column-sub-category px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]"
+                      scope="col">Sub Category</th>
+                    <th
+                      class="sortable-header table-column-avg-price px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]"
+                      data-sort-key="avgPrice" data-sort-type="currency" scope="col">Avg Price <span
+                        class="sort-icon material-icons-outlined text-sm align-middle">unfold_more</span></th>
+
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-[var(--border-color)] bg-white" id="tableBody">
+                  {%if demands%}
+                  {%for demand in demands%}
+                  <tr data-category="{{demand.category}}" data-sub-category="{{demand.sub_cat}}">
+                    <td class="table-column-id px-4 py-3 whitespace-nowrap text-sm text-[var(--text-secondary)]">
+                      {{demand.id}}</td>
+                    <td
+                      class="table-column-name px-4 py-3 whitespace-nowrap text-sm font-medium text-[var(--text-primary)]">
+                      {{demand.name}}</td>
+                    <td class="table-column-category px-4 py-3 whitespace-nowrap text-sm text-[var(--text-secondary)]">
+                      {{demand.category}}</td>
+                    <td
+                      class="table-column-sub-category px-4 py-3 whitespace-nowrap text-sm text-[var(--text-secondary)]">
+                      {{demand.sub_cat}}</td>
+                    <td class="table-column-avg-price px-4 py-3 whitespace-nowrap text-sm text-[var(--text-secondary)]">
+                      {{demand.avg_price}}</td>
+
+                  </tr>
+                  {%endfor%}
+                  {%else%}
+                  <tr>
+                    <td class="text-center py-10 px-6" colspan="5">
+                      <div class="flex flex-col items-center justify-center">
+                        <svg class="w-16 h-16 text-slate-400 mb-4" fill="none" stroke="currentColor" stroke-width="1"
+                          viewBox="0 0 24 24">
+                          <path d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            stroke-linecap="round" stroke-linejoin="round"></path>
+                          <path
+                            d="M21.151 19.151L18.828 16.828m2.323-2.323L16.828 18.828M3.849 19.151L6.172 16.828M3.849 4.849L6.172 7.172"
+                            stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                        <p class="text-slate-500 text-lg font-medium">Sorry, nothing here!</p>
+                        <p class="text-slate-400 text-sm mt-1">There are currently no demands from your college.</p>
+                      </div>
+                    </td>
+                  </tr>
+                  {%endif%}
+
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script>
+    const sidebar = document.getElementById('filterSidebar');
+    const openFilterSidebarButton = document.getElementById('openFilterSidebarButton');
+    const closeSidebarButton = document.getElementById('closeSidebarButton');
+    const searchInput = document.getElementById('searchInput');
+    const categoryFiltersContainer = document.getElementById('categoryFilters');
+    const subCategoryFiltersContainer = document.getElementById('subCategoryFilters');
+    const subCategoryCheckboxes = document.querySelectorAll('.sub-category-checkbox');
+    const subCategoryLabels = Array.from(subCategoryFiltersContainer.querySelectorAll('label'));
+    const tableBody = document.getElementById('tableBody');
+    let tableRows = Array.from(tableBody.querySelectorAll('tr'));
+    const sortableHeaders = document.querySelectorAll('.sortable-header');
+    const sortControlsContainer = document.getElementById('sortControls');
+    let currentSort = { key: null, direction: 'asc' };
+    let activeCategoryFilter = 'All';
+    let activeSubCategoryFilters = [];
+    function toggleSidebar() {
+      sidebar.classList.toggle('sidebar-closed');
+      sidebar.classList.toggle('sidebar-open');
+    }
+    if (openFilterSidebarButton) openFilterSidebarButton.addEventListener('click', toggleSidebar);
+    if (closeSidebarButton) closeSidebarButton.addEventListener('click', toggleSidebar);
+    function updateSubCategoryVisibility() {
+      subCategoryLabels.forEach(label => {
+        const parentCategory = label.dataset.parentCategory;
+        const checkbox = label.querySelector('.sub-category-checkbox');
+        if (activeCategoryFilter === 'All' || parentCategory === activeCategoryFilter) {
+          label.style.display = '';
+        } else {
+          label.style.display = 'none';
+          // If a subcategory is hidden, uncheck it and remove from active filters
+          if (checkbox.checked) {
+            checkbox.checked = false;
+            activeSubCategoryFilters = activeSubCategoryFilters.filter(sub => sub !== checkbox.value);
+          }
+        }
+      });
+    }
+    function filterTable() {
+      const searchTerm = searchInput.value.toLowerCase();
+      tableRows.forEach(row => {
+        const name = row.querySelector('.table-column-name').textContent.toLowerCase();
+        const category = row.dataset.category;
+        const subCategory = row.dataset.subCategory;
+        const matchesSearch = name.includes(searchTerm);
+        const matchesCategory = activeCategoryFilter === 'All' || category === activeCategoryFilter;
+        const matchesSubCategory = activeSubCategoryFilters.length === 0 || activeSubCategoryFilters.includes(subCategory);
+        if (matchesSearch && matchesCategory && matchesSubCategory) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+    searchInput.addEventListener('input', filterTable);
+    categoryFiltersContainer.addEventListener('click', (event) => {
+      if (event.target.classList.contains('filter-chip')) {
+        categoryFiltersContainer.querySelectorAll('.filter-chip').forEach(chip => chip.classList.remove('active-filter'));
+        event.target.classList.add('active-filter');
+        activeCategoryFilter = event.target.dataset.category;
+        updateSubCategoryVisibility(); // Update subcategories based on the new category
+        filterTable(); // Then filter the table
+      }
+    });
+    subCategoryCheckboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', () => {
+        activeSubCategoryFilters = Array.from(subCategoryCheckboxes)
+          .filter(cb => cb.checked && cb.closest('label').style.display !== 'none') // Only consider visible and checked
+          .map(cb => cb.value);
+        filterTable();
+      });
+    });
+    function parseValue(value, type) {
+      if (type === 'number') {
+        return parseFloat(value);
+      } else if (type === 'currency') {
+        return parseFloat(value.replace('$', '').replace(',', ''));
+      } else if (type === 'string') {
+        return value.toLowerCase();
+      }
+      return value;
+    }
+    function sortTable(key, type, direction) {
+      const sortedRows = [...tableRows].sort((a, b) => {
+        const valA = parseValue(a.querySelector(`.table-column-${key.replace(/([A-Z])/g, "-$1").toLowerCase()}`).textContent.trim(), type);
+        const valB = parseValue(b.querySelector(`.table-column-${key.replace(/([A-Z])/g, "-$1").toLowerCase()}`).textContent.trim(), type);
+        if (valA < valB) return direction === 'asc' ? -1 : 1;
+        if (valA > valB) return direction === 'asc' ? 1 : -1;
+        return 0;
+      });
+      tableBody.innerHTML = '';
+      sortedRows.forEach(row => tableBody.appendChild(row));
+      tableRows = sortedRows;
+      filterTable();
+    }
+    function updateSortIcons(clickedHeader) {
+      sortableHeaders.forEach(header => {
+        const icon = header.querySelector('.sort-icon');
+        if (header === clickedHeader) {
+          if (currentSort.direction === 'asc') {
+            icon.textContent = 'arrow_upward';
+            header.classList.add('sorted-asc');
+            header.classList.remove('sorted-desc');
+          } else {
+            icon.textContent = 'arrow_downward';
+            header.classList.add('sorted-desc');
+            header.classList.remove('sorted-asc');
+          }
+        } else {
+          icon.textContent = 'unfold_more';
+          header.classList.remove('sorted-asc', 'sorted-desc');
+        }
+      });
+    }
+    sortableHeaders.forEach(header => {
+      const key = header.dataset.sortKey;
+      const type = header.dataset.sortType;
+      if (key === 'avgPrice' || key === 'totalDemands') {
+        const headerTextContent = header.cloneNode(true);
+        Array.from(headerTextContent.querySelectorAll('.sort-icon')).forEach(icon => icon.remove());
+        const defaultText = headerTextContent.textContent.trim();
+        const btnAsc = document.createElement('button');
+        btnAsc.className = "filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-1 rounded-full bg-[var(--secondary-color)] px-3 py-1 text-xs font-medium text-[var(--text-primary)] transition-colors";
+        btnAsc.innerHTML = `${defaultText} <span class="material-icons-outlined text-sm">arrow_upward</span>`;
+        btnAsc.addEventListener('click', () => {
+          currentSort = { key, direction: 'asc' };
+          sortTable(key, type, 'asc');
+          updateSortIcons(header);
+          document.querySelectorAll('#sortControls .filter-chip').forEach(c => c.classList.remove('active-filter'));
+          btnAsc.classList.add('active-filter');
+        });
+        sortControlsContainer.appendChild(btnAsc);
+        const btnDesc = document.createElement('button');
+        btnDesc.className = "filter-chip flex h-8 shrink-0 cursor-pointer items-center justify-center gap-x-1 rounded-full bg-[var(--secondary-color)] px-3 py-1 text-xs font-medium text-[var(--text-primary)] transition-colors";
+        btnDesc.innerHTML = `${defaultText} <span class="material-icons-outlined text-sm">arrow_downward</span>`;
+        btnDesc.addEventListener('click', () => {
+          currentSort = { key, direction: 'desc' };
+          sortTable(key, type, 'desc');
+          updateSortIcons(header);
+          document.querySelectorAll('#sortControls .filter-chip').forEach(c => c.classList.remove('active-filter'));
+          btnDesc.classList.add('active-filter');
+        });
+        sortControlsContainer.appendChild(btnDesc);
+        header.addEventListener('click', () => {
+          const newDirection = (currentSort.key === key && currentSort.direction === 'asc') ? 'desc' : 'asc';
+          currentSort = { key, direction: newDirection };
+          sortTable(key, type, newDirection);
+          updateSortIcons(header);
+          document.querySelectorAll('#sortControls .filter-chip').forEach(c => c.classList.remove('active-filter'));
+          if (newDirection === 'asc') {
+            btnAsc.classList.add('active-filter');
+          } else {
+            btnDesc.classList.add('active-filter');
+          }
+        });
+      } else {
+        header.classList.remove('sortable-header');
+        const icon = header.querySelector('.sort-icon');
+        if (icon) icon.remove();
+      }
+    });
+    // Initial setup
+    updateSubCategoryVisibility();
+    filterTable();
+  </script>
+</body>
+
+{%endblock%}

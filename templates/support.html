@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div>
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+<style>
+    /* Customer Support Page Styling */
+    .customer-support-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .customer-support-container h2 {
+        color: #007bff;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* Contact Number Styling */
+    .contact-numbers {
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .contact-numbers h5 {
+        color: #343a40;
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .contact-numbers ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .contact-numbers li {
+        font-size: 20px;
+        font-weight: bold;
+        padding: 10px;
+        margin: 5px 0;
+        background: #007bff;
+        color: white;
+        border-radius: 5px;
+        display: inline-block;
+        width: 100%;
+        max-width: 250px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .contact-numbers li:hover {
+        transform: scale(1.05);
+        background: #0056b3;
+    }
+
+    .contact-numbers li::before {
+        content: "📞 ";
+        font-size: 22px;
+        color: #ffcc00;
+    }
+</style>
+<br><br><br><br>
+<div class="container mt-4">
+    <h2>Customer Support</h2>
+    <p>Have a question? Submit your query below, and we'll get back to you!</p>
+
+    <h5>📞 Contact Us:</h5>
+    <ul class="list-unstyled">
+        <li>📞 +91 70701 90843</li>
+        <li>📞 +91 99034 60989</li>
+        <li>📞 +91 83181 61140</li>
+    </ul>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            {{ form.query_text.label(class="form-label") }}
+            {{ form.query_text(class="form-control", rows=5) }}
+        </div>
+        <div class="mb-3">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+</div>
+{%endblock%}

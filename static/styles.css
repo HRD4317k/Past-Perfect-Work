@@ -1,0 +1,357 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Kadwa:wght@400;700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Salsa&family=Tiro+Devanagari+Hindi:ital@0;1&display=swap');
+
+* {
+    scroll-behavior: smooth;
+}
+
+.container{
+    margin: auto;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    background: #333333;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.header p {
+    font-size: 1.3rem;
+    font-style: italic;
+    /* margin-top: -0.5rem; */
+    transition: color 0.3s ease;
+
+}
+
+.mission-vision {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    margin: 2rem auto;
+    max-width: 80%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+
+.section-content {
+    flex: 1;
+    padding: 1.5rem;
+    background: #f9f9f9;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.section-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.section-content h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.team {
+    padding: 2rem;
+    text-align: center;
+}
+
+.team h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    transition: color 0.3s ease;
+}
+
+.team-members {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.team-member {
+    width: 250px;
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    overflow: hidden;
+}
+
+.team-member:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.team-member img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    border: 4px solid #333333;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.team-member:hover img {
+    transform: scale(1.1);
+    border-color: #555555;
+}
+
+.team-member h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.team-member p {
+    font-size: 1rem;
+    color: #666666;
+    margin-bottom: 1rem;
+}
+
+.social-links a {
+    font-size: 1.5rem;
+    margin: 0 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.social-links a:hover {
+    transform: scale(1.2);
+}
+
+/* Core Values Section */
+.values {
+    padding: 2rem;
+    text-align: center;
+    background: #f9f9f9;
+    margin-top: 3rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.values h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.value-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    justify-content: center;
+}
+
+.value-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.value-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.card-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    transition: color 0.3s ease;
+}
+
+.card-content:hover h3 {
+    color: #555555;
+}
+
+.card-content p {
+    font-size: 1rem;
+    color: #666666;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .mission-vision {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .team-members {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .value-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+
+/* changes made by me */
+
+.hero-section {
+    display: flex;
+    justify-content: center;
+    /* Centers content */
+    align-items: center;
+    padding: 50px 0;
+    background-color: #e8f5e9;
+    width: 100vw;
+    /* Full width */
+    height: 90vh;
+    box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.17);
+}
+
+.hero-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 85vw;
+    /* Keeps content constrained */
+    margin: 0 auto;
+}
+
+.hero-text {
+    flex: 1;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 40%;
+}
+
+.hero-text h1 {
+    font-size: 4rem;
+    font-weight: bold;
+}
+
+.hero-text p {
+    font-size: 1.3rem;
+    margin: 20px 0;
+}
+
+.explore-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #3C8A8B;
+    /* Lighter teal */
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    margin-right: 16px;
+    /* Adds space between buttons */
+}
+
+.explore-btn:hover {
+    background-color: #2F7273;
+    /* Slightly lighter hover */
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.team-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #2C4E80;
+    /* Lighter navy */
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+.team-btn:hover {
+    background-color: #304568;
+    /* Slightly lighter hover */
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensures proper spacing if inside a flex container */
+.button-container {
+    display: flex;
+    gap: 20px;
+    /* More spacing between buttons */
+}
+
+.hero-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    max-width: 50%;
+}
+
+.hero-image img {
+    max-width: 70%;
+    height: auto;
+}
+
+
+
+@media (max-width:768px) {
+
+    .btn {
+        font-size: 0.8rem;
+    }
+
+    .hero-text {
+        max-width: 90%;
+    }
+
+    .hero-section {
+        flex-direction: column;
+        align-items: center;
+        align-self: center;
+        justify-content: space-evenly;
+    }
+
+    .hero-text h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero-text p {
+        font-size: 1.2rem;
+        margin: 20px 0;
+    }
+
+    .hero-image img {
+        max-width: 140%;
+        height: auto;
+    }
+
+    
+
+    
+    .green-but {
+        display: flex;
+        font-size: 0.7rem;
+        gap: 5px;
+    }
+
+    
+}

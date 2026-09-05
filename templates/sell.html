@@ -1,0 +1,504 @@
+{% extends "base.html" %}
+
+{% block title %} Home Page {% endblock %}
+
+{% block content %}
+
+
+<style>
+  body {
+    font-family: 'Inter', sans-serif;
+    /* background-color: #f9fafb; */
+    color: #1f2937;
+  }
+
+
+  .submit-button:disabled {
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  .form-container {
+    max-width: 800px;
+    margin: 3rem auto;
+    padding: 3rem;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  }
+
+  #list_head {
+    font-family: 'Poppins', sans-serif;
+    color: #111827;
+    font-size: 2.75rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+    text-align: center;
+    letter-spacing: -0.5px;
+  }
+
+  h2 {
+    font-family: 'Poppins', sans-serif;
+    color: #374151;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  label {
+    color: #4b5563;
+    font-weight: 500;
+    margin-bottom: 0.625rem;
+    display: block;
+    font-size: 0.875rem;
+  }
+
+  .input-field,
+  .select-field,
+  .textarea-field {
+    width: 100%;
+    padding: 0.875rem 1.125rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background-color: #f9fafb;
+    color: #1f2937;
+    font-size: 0.9375rem;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+
+  .input-field::placeholder,
+  .select-field::placeholder,
+  .textarea-field::placeholder {
+    color: #9ca3af;
+  }
+
+  .input-field:focus,
+  .select-field:focus,
+  .textarea-field:focus {
+    border-color: #3b82f6;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.15);
+    background-color: #ffffff;
+  }
+
+  .textarea-field {
+    min-height: 140px;
+    resize: vertical;
+  }
+
+  .file-upload-area {
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    padding: 2.5rem;
+    text-align: center;
+    background-color: #f9fafb;
+    transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    cursor: pointer;
+  }
+
+  .file-upload-area:hover {
+    border-color: #3b82f6;
+    background-color: #f3f4f6;
+  }
+
+  .upload-icon {
+    font-size: 3.5rem;
+    color: #6b7280;
+    margin-bottom: 1rem;
+    transition: color 0.3s ease;
+  }
+
+  .file-upload-area:hover .upload-icon {
+    color: #3b82f6;
+  }
+
+  .upload-text {
+    color: #374151;
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  .upload-hint {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+  }
+
+  .browse-button {
+    background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    margin-top: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1);
+  }
+
+  .browse-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.2);
+  }
+
+  .browse-button .material-icons-outlined {
+    font-size: 1.375rem;
+  }
+
+  .submit-button {
+    background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+    color: #ffffff;
+    padding: 1rem 2.5rem;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1.125rem;
+    cursor: pointer;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 3rem;
+    border: none;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.1);
+  }
+
+  .submit-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.2);
+  }
+
+  .submit-button .material-icons-outlined {
+    margin-right: 0.75rem;
+    font-size: 1.375rem;
+  }
+
+  .asterisk {
+    color: #ef4444;
+    margin-left: 0.25rem;
+  }
+
+  .select-wrapper {
+    position: relative;
+  }
+
+  .select-field {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 2.5rem;
+  }
+
+  .form-section {
+    margin-bottom: 2.5rem;
+  }
+</style>
+
+<body>
+  <div class="form-container">
+    <h1 id="list_head">Create Your Listing</h1>
+    <form method="POST" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+      <div class="form-section">
+        <h2>Item Details</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6 mb-6">
+          <div>
+            <label for="title">Item Title<span class="asterisk">*</span></label>
+            {{form.name(class_="input-field", id="title")}}
+          </div>
+          <div>
+            <label for="category">Category<span class="asterisk">*</span></label>
+            <div class="select-wrapper">
+              {{form.category(class_="select-field", id="category")}}
+            </div>
+          </div>
+        </div>
+        <div class="mb-6">
+
+
+          <div id="sub_elec_app_wrapper" class="sub-category-div" style="display:none">
+            <label for="sub-category">Sub-Category<span class="asterisk">*</span></label>
+            {{ form.sub_elec_app(class_="select-field", id="sub_elec_app") }}
+          </div>
+
+          <div id="sub_elec_acc_wrapper" class="sub-category-div" style="display:none">
+            <label for="sub-category">Sub-Category<span class="asterisk">*</span></label>
+            {{ form.sub_elec_acc(class_="select-field", id="sub_elec_acc") }}
+          </div>
+
+          <div id="sub_acad_acc_wrapper" class="sub-category-div" style="display:none">
+            <label for="sub-category">Sub-Category<span class="asterisk">*</span></label>
+            {{ form.sub_acad_acc(class_="select-field", id="sub_acad_acc") }}
+          </div>
+
+          <div id="sub_personal_wrapper" class="sub-category-div" style="display:none">
+            <label for="sub-category">Sub-Category<span class="asterisk">*</span></label>
+            {{ form.sub_personal_acc(class_="select-field", id="sub_personal_acc") }}
+          </div>
+
+          <div id="sub_books_wrapper" class="sub-category-div" style="display:none">
+            <label for="sub-category">Sub-Category<span class="asterisk">*</span></label>
+            {{ form.sub_books(class_="select-field", id="sub_books") }}
+          </div>
+
+          <div id="sub_mat_wrapper" class="sub-category-div" style="display:none">
+            <label for="sub-category">Sub-Category<span class="asterisk">*</span></label>
+            {{ form.sub_mat(class_="select-field", id="sub_mat") }}
+          </div>
+
+          <div id="sub_cycle_wrapper" class="sub-category-div" style="display:none">
+            <label for="sub-category">Sub-Category<span class="asterisk">*</span></label>
+            {{ form.sub_cycle(class_="select-field", id="sub_cycle") }}
+          </div>
+          <div id="sub_watch_wrapper" class="sub-category-div" style="display:none">
+            <label for="sub-category">Sub-Category<span class="asterisk">*</span></label>
+            {{ form.sub_watch(class_="select-field", id="sub_watch") }}
+          </div>
+          <div id="sub_sports_wrapper" class="sub-category-div" style="display:none">
+            <label for="sub-category">Sub-Category<span class="asterisk">*</span></label>
+            {{ form.sub_sports(class_="select-field", id="sub_sports") }}
+          </div>
+          <div id="sub_hostel_wrapper" class="sub-category-div" style="display:none">
+            <label for="sub-category">Sub-Category<span class="asterisk">*</span></label>
+            {{ form.sub_hostel(class_="select-field", id="sub_hostel") }}
+          </div>
+        </div>
+
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
+          <div>
+            <label for="price">Original Price (INR)<span class="asterisk">*</span></label>
+            {{form.price(class_="input-field", id="price")}}
+
+          </div>
+          <div>
+            <label for="condition">Item Condition<span class="asterisk">*</span></label>
+            {{form.condition(class_="select-field", id="condition")}}
+            
+          </div>
+        </div><br>
+        <div class="mb-6">
+          <div id="misc_price_wrapper" class="sub-category-div" style="display:none">
+          <label for="pref_price">Preferred selling price</label>
+          {{form.misc_price(class_="input-field", id="misc_price")}}
+        </div>
+        </div>
+        <div class="mb-6">
+          <label for="description">Detailed Description<span class="asterisk">*</span></label>
+          {{form.description(class_="textarea-field", id="description")}}
+
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6 mb-6">
+          <div>
+            <label for="assurance"><b>Assurance</b><span class="asterisk">*</span></label>
+          {{ form.assured(class_="select-field") }}
+          </div>
+          <div>
+            <label for="age">Age<span class="asterisk">*</span></label>
+            <div class="select-wrapper">
+              {{form.age(class_="select-field", id="age")}}
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      <div class="form-section">
+        <h2>Upload Photos<span class="asterisk">*</span></h2>
+        <div class="file-upload-area" id="drop-zone">
+          <span class="material-icons-outlined upload-icon">backup</span>
+          <p class="upload-text">Drag &amp; drop images here or click</p>
+          <p class="upload-hint">Showcase your item! Up to 10 high-quality photos.</p>
+          <p class="upload-hint">Supports PNG, JPG, WEBP. Max 10MB each.</p>
+          <p class="upload-hint">Minimum 2 required!</p>
+          <button class="browse-button mt-6" id="browse-files-btn" type="button">
+            <span class="material-icons-outlined mr-2">add_photo_alternate</span>
+            Select Files
+          </button>
+          <input accept="image/png, image/jpeg, image/webp" class="hidden" id="file-input-hidden" multiple name="pic_file_path"
+            type="file" />
+          <div class="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
+            id="image-preview-container"></div>
+        </div>
+      </div>
+      <button class="submit-button" type="submit" name="submit" id="submit-button">
+        <span class="button-icon material-icons-outlined">rocket_launch</span>
+        <span class="button-text">Publish Your Listing</span>
+
+        <!-- Lottie container (hidden by default) -->
+        <span class="lottie-loader hidden" id="lottie-loader" style="width: 30px; height: 30px;"></span>
+      </button>
+    </form>
+  </div>
+  <script>
+    const dropZone = document.getElementById('drop-zone');
+    const browseButton = document.getElementById('browse-files-btn');
+    const fileInput = document.getElementById('file-input-hidden');
+    const imagePreviewContainer = document.getElementById('image-preview-container');
+    if (browseButton && fileInput) {
+      browseButton.addEventListener('click', () => fileInput.click());
+    }
+    if (dropZone && fileInput) {
+      dropZone.addEventListener('click', (e) => {
+        if (e.target === dropZone || e.target.classList.contains('upload-icon') || e.target.classList.contains('upload-text') || e.target.classList.contains('upload-hint')) {
+          fileInput.click();
+        }
+      });
+    }
+    if (dropZone) {
+      dropZone.addEventListener('dragover', (event) => {
+        event.preventDefault();
+        dropZone.classList.add('border-blue-500', 'bg-gray-50');
+      });
+      dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('border-blue-500', 'bg-gray-50');
+      });
+      dropZone.addEventListener('drop', (event) => {
+        event.preventDefault();
+        dropZone.classList.remove('border-blue-500', 'bg-gray-50');
+        if (event.dataTransfer.files.length) {
+          fileInput.files = event.dataTransfer.files;
+          handleFiles(fileInput.files);
+        }
+      });
+    }
+    if (fileInput) {
+      fileInput.addEventListener('change', () => {
+        if (fileInput.files.length) {
+          handleFiles(fileInput.files);
+        }
+      });
+    }
+    function handleFiles(files) {
+      imagePreviewContainer.innerHTML = '';
+      const maxFiles = 10;
+      for (let i = 0; i < Math.min(files.length, maxFiles); i++) {
+        const file = files[i];
+        if (file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const imgElement = document.createElement('img');
+            imgElement.src = e.target.result;
+            imgElement.alt = file.name;
+            imgElement.classList.add('w-full', 'h-32', 'object-cover', 'rounded-lg', 'border', 'border-gray-300');
+            imagePreviewContainer.appendChild(imgElement);
+          }
+          reader.readAsDataURL(file);
+        }
+      }
+    }
+    $(document).ready(function () {
+      // Initially hide all sub-category wrappers
+      $('.sub-category-div').hide();
+
+      $('#category').change(function () {
+        $('.sub-category-div').hide(); // Hide all first
+
+        let selectedCategory = $(this).val();
+
+        switch (selectedCategory) {
+          case 'Electronics':
+            $('#sub_elec_acc_wrapper').show();
+            break;
+          case 'Appliances & Kitchenware':
+            $('#sub_elec_app_wrapper').show();
+            break;
+          case 'Academic Accessories':
+            $('#sub_acad_acc_wrapper').show();
+            break;
+          case 'Personal Accessories':
+            $('#sub_personal_wrapper').show();
+            break;
+          case 'Books':
+            $('#sub_books_wrapper').show();
+            break;
+          case 'Mattress':
+            $('#sub_mat_wrapper').show();
+            break;
+          case 'Cycles':
+            $('#sub_cycle_wrapper').show();
+            break;
+          case 'Watches':
+            $('#sub_watch_wrapper').show();
+            break;
+          case 'Fitness & Sports':
+            $('#sub_sports_wrapper').show();
+            break;
+          case 'Hostel Essentials':
+            $('#sub_hostel_wrapper').show();
+            break;
+          case 'Miscellaneous':
+            $('#misc_price_wrapper').show();
+            break;
+          
+        }
+      });
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+    // Convert Flask dictionary to JS object
+    const conditionOptions = JSON.parse('{{ cond_desc | tojson | safe }}');
+
+    // Category change event
+    const categorySelect = document.getElementById("category");
+    const conditionSelect = document.getElementById("condition");
+
+    categorySelect.addEventListener("change", function () {
+      const selected = this.value;
+      const options = conditionOptions[selected];
+
+      // Clear existing options
+      conditionSelect.innerHTML = "";
+
+      if (options) {
+        conditionSelect.innerHTML = `<option disabled selected value="">Select condition</option>`;
+
+        // Add new options dynamically
+        for (const [key, value] of Object.entries(options)) {
+          const option = new Option(value, key);
+          conditionSelect.appendChild(option);
+        }
+      } else {
+        conditionSelect.innerHTML = `<option disabled selected value="">Choose a category first!</option>`;
+      }
+    });
+  });
+
+
+
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.querySelector("form");
+      const button = document.getElementById("submit-button");
+      const icon = button.querySelector(".button-icon");
+      const text = button.querySelector(".button-text");
+      const lottieContainer = document.getElementById("lottie-loader");
+
+      // Load the Lottie animation
+      const lottieAnimation = lottie.loadAnimation({
+        container: lottieContainer,
+        renderer: 'svg',
+        loop: true,
+        autoplay: false,
+        path: 'https://assets5.lottiefiles.com/packages/lf20_j1adxtyb.json' // Replace with any Lottie loader you like
+      });
+
+      form.addEventListener("submit", function () {
+        button.disabled = true;
+        icon.classList.add("hidden");
+        text.textContent = "Predicting price...";
+        lottieContainer.classList.remove("hidden");
+        lottieAnimation.play();
+      });
+    });
+  </script>
+
+
+</body>
+
+{%endblock%}

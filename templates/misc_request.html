@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div>
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+<br><br>
+
+<style>
+    .container {
+        font-family: Arial, sans-serif;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100%;
+        background-color: #f8f9fa;
+        padding: 20px;
+    }
+
+    .order-summary {
+        background: white;
+        width: 95%;
+        max-width: 650px;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    @media (max-width: 768px) {
+        .order-summary {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 0;
+            
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    }
+</style>
+<div class="container">
+    <div class="order-summary">
+        <div class="col-md-12">
+            <h4>Request a Misc Item</h4><br>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="item_name">Item Name</label>
+                    <input type="text" class="form-control" id="item" name="item_name" placeholder="item name">
+                </div><br>
+                <div class="form-group">
+                    <label for="preferred_price">Preffered Price</label>
+                    <input type="text" class="form-control" id="item" name="preffered_price" placeholder="price at which you want to sell">
+                </div><br><br>
+            <button type="submit" class="btn btn-danger">Submit for approval</button>
+            </form><br><br>
+            <div class="text">
+                <p>Our team of experts will soon reach out to you to verify the integrity of your item</p>
+                <p>If the product meets our standards it will be displayed with the negotiated price</p>
+                <p style="color: green; font-size: 1.5rem; font-weight: 400;">Thank you for choosing us!</p>
+            </div>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

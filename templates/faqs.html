@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %} FAQs {% endblock %}
+
+{% block content %}
+  <body>
+    <div class="relative flex size-full min-h-screen flex-col bg-gray-50 group/design-root overflow-x-hidden" style='font-family: Inter, "Noto Sans", sans-serif;'>
+      <div class="layout-container flex h-full grow flex-col">
+        <div class="px-40 flex flex-1 justify-center py-5">
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <div class="flex flex-wrap justify-between gap-3 p-4">
+              <div class="flex min-w-72 flex-col gap-3">
+                <p class="text-[#101418] tracking-light text-[32px] font-bold leading-tight">Frequently Asked Questions</p>
+                <p class="text-[#5c728a] text-sm font-normal leading-normal">Find answers to common questions about our services.</p>
+              </div>
+            </div>
+            <div class="flex flex-col p-4 gap-4">
+              <details class="flex flex-col rounded-xl border border-[#d4dbe2] bg-gray-50 px-[15px] py-[7px] group">
+                <summary class="flex cursor-pointer items-center justify-between gap-6 py-2">
+                  <p class="text-[#101418] text-sm font-medium leading-normal">How do I create an account?</p>
+                  <div class="text-[#101418] group-open:rotate-180" data-icon="CaretDown" data-size="20px" data-weight="regular">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+                    </svg>
+                  </div>
+                </summary>
+                <p class="text-[#5c728a] text-sm font-normal leading-normal pb-2">
+                  1. Go to the sign-up page. 2. Fill in your details. 3. Verify your email. 4. Set a strong password. 5. Agree to the terms and conditions. 6. Click 'Create Account'.
+                </p>
+              </details>
+              <details class="flex flex-col rounded-xl border border-[#d4dbe2] bg-gray-50 px-[15px] py-[7px] group">
+                <summary class="flex cursor-pointer items-center justify-between gap-6 py-2">
+                  <p class="text-[#101418] text-sm font-medium leading-normal">What payment methods do you accept?</p>
+                  <div class="text-[#101418] group-open:rotate-180" data-icon="CaretDown" data-size="20px" data-weight="regular">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+                    </svg>
+                  </div>
+                </summary>
+                <p class="text-[#5c728a] text-sm font-normal leading-normal pb-2">
+                  We accept major credit cards (Visa, MasterCard, American Express), PayPal, and bank transfers. Contact support for region-specific options.
+                </p>
+              </details>
+              <details class="flex flex-col rounded-xl border border-[#d4dbe2] bg-gray-50 px-[15px] py-[7px] group">
+                <summary class="flex cursor-pointer items-center justify-between gap-6 py-2">
+                  <p class="text-[#101418] text-sm font-medium leading-normal">How can I contact customer support?</p>
+                  <div class="text-[#101418] group-open:rotate-180" data-icon="CaretDown" data-size="20px" data-weight="regular">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+                    </svg>
+                  </div>
+                </summary>
+                <p class="text-[#5c728a] text-sm font-normal leading-normal pb-2">
+                  Reach us via email at support@example.com, through our live chat on the website, or by phone at 1-800-123-4567 (available 24/7).
+                </p>
+              </details>
+              <details class="flex flex-col rounded-xl border border-[#d4dbe2] bg-gray-50 px-[15px] py-[7px] group">
+                <summary class="flex cursor-pointer items-center justify-between gap-6 py-2">
+                  <p class="text-[#101418] text-sm font-medium leading-normal">How do I reset my password?</p>
+                  <div class="text-[#101418] group-open:rotate-180" data-icon="CaretDown" data-size="20px" data-weight="regular">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+                    </svg>
+                  </div>
+                </summary>
+                <p class="text-[#5c728a] text-sm font-normal leading-normal pb-2">
+                  1. Click 'Forgot Password' on the login page. 2. Enter your email address. 3. Check your email for a reset link. 4. Click the link and follow the instructions. 5. Create a new password. 6. Confirm your new password.
+                </p>
+              </details>
+              <details class="flex flex-col rounded-xl border border-[#d4dbe2] bg-gray-50 px-[15px] py-[7px] group">
+                <summary class="flex cursor-pointer items-center justifyERGE-6 py-2">
+                  <p class="text-[#101418] text-sm font-medium leading-normal">Can I change my subscription plan?</p>
+                  <div class="text-[#101418] group-open:rotate-180" data-icon="CaretDown" data-size="20px" data-weight="regular">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+                    </svg>
+                  </div>
+                </summary>
+                <p class="text-[#5c728a] text-sm font-normal leading-normal pb-2">
+                  Yes, log in to your account, go to 'Subscription Settings,' select a new plan, and confirm the change. Changes take effect at the next billing cycle.
+                </p>
+              </details>
+              <details class="flex flex-col rounded-xl border border-[#d4dbe2] bg-gray-50 px-[15px] py-[7px] group">
+                <summary class="flex cursor-pointer items-center justify-between gap-6 py-2">
+                  <p class="text-[#101418] text-sm font-medium leading-normal">What is your refund policy?</p>
+                  <div class="text-[#101418] group-open:rotate-180" data-icon="CaretDown" data-size="20px" data-weight="regular">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+                    </svg>
+                  </div>
+                </summary>
+                <p class="text-[# 5c728a] text-sm font-normal leading-normal pb-2">
+                  Refunds are available within 30 days of purchase if you're unsatisfied. Contact support at support@example.com to initiate a refund request.
+                </p>
+              </details>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const details = document.querySelectorAll('details');
+        details.forEach((targetDetail) => {
+          targetDetail.addEventListener('toggle', () => {
+            if (targetDetail.open) {
+              details.forEach((detail) => {
+                if (detail !== targetDetail) {
+                  detail.open = false;
+                }
+              });
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+{% endblock %}

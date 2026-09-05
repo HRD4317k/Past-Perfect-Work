@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+
+{% block title %} Home Page {% endblock %}
+
+{% block content %}
+
+<style class="text/tailwindcss">
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card.assured-card:hover {
+        box-shadow: 0 10px 20px rgba(16, 237, 104, 0.2);
+    }
+
+    .card:not(.assured-card):hover {
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .assured-badge {
+        background-color: #e6fff2;
+        color: #00875a;
+        border: 1px solid #00875a;
+    }
+
+    
+</style>
+
+<body class="bg-white">
+    <div class="relative flex flex-col min-h-screen w-full overflow-x-hidden"
+        style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+        <div class="layout-container flex h-full grow flex-col">
+
+            <div class="flex-1 px-3 py-8 md:px-20 lg:px-40">
+                <div class="mx-auto max-w-screen-xl">
+                    <div class="mb-6 text-sm text-[#757575]">
+                        <a class="hover:text-[#141414] transition-colors" href="/browse">Shop</a>
+                        <span class="mx-2">/</span>
+                        <a class="hover:text-[#141414] transition-colors" href="#">{{item.category}}</a>
+
+
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                        <div class="relative lg:col-span-2">
+
+                            <div class="overflow-hidden rounded-lg shadow-lg h-full max-h-[600px] max-w-[800px]">
+                                <div class="relative aspect-video lg:aspect-[8/6] h-full">
+                                    <div class="absolute inset-0 flex transition-transform duration-500 ease-in-out h-full"
+                                        id="carousel-items">
+                                        {% if item.vid %}
+                                        {% set vid_id = item.vid.split('v=')[-1].split('&')[0] if 'watch?v=' in item.vid
+                                        else item.vid.split('/')[-1] %}
+                                        <!-- Video Slide -->
+                                        <div class="w-full h-full flex-shrink-0">
+                                            <iframe class="w-full h-full rounded-lg"
+                                                src="https://www.youtube.com/embed/{{ vid_id }}?rel=0&modestbranding=1"
+                                                title="Item video" frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowfullscreen>
+                                            </iframe>
+                                        </div>
+                                        {% endif %}
+                                        {% for path in item.pic_file_path.split(',')%}
+                                        <img alt="Item image {{ loop.index }}"
+                                            class="w-full h-full object-contain flex-shrink-0" src="{{ path }}">
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <!-- Carousel dots -->
+                                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+                                    {% if item.vid %}
+                                    <button
+                                        class="carousel-dot h-3 w-3 rounded-full bg-white/50 backdrop-blur-sm ring-1 ring-white/30 transition-all duration-300"
+                                        data-slide="0"></button>
+                                    {% set offset = 1 %}
+                                    {% else %}
+                                    {% set offset = 0 %}
+                                    {% endif %}
+
+                                    {% for path in item.pic_file_path.split(',') %}
+                                    <button
+                                        class="carousel-dot h-3 w-3 rounded-full bg-white/50 backdrop-blur-sm ring-1 ring-white/30 transition-all duration-300"
+                                        data-slide="{{ loop.index0 + offset }}"></button>
+                                    {% endfor %}
+                                </div>
+
+                                <!-- Carousel navigation arrows -->
+                                <button
+                                    class="carousel-prev absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-white/50 backdrop-blur-sm rounded-full text-gray-700 hover:bg-white transition">
+                                    <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round"
+                                        stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <polyline points="15 18 9 12 15 6"></polyline>
+                                    </svg>
+                                </button>
+                                <button
+                                    class="carousel-next absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-white/50 backdrop-blur-sm rounded-full text-gray-700 hover:bg-white transition">
+                                    <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round"
+                                        stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <polyline points="9 18 15 12 9 6"></polyline>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6 lg:col-span-1">
+                            <h1 class="text-[#141414] text-3xl font-bold leading-tight tracking-tight">{{item.name}}
+                            </h1>
+                            <div>
+                                <p class="text-[#141414] text-4xl font-bold leading-tight tracking-tight">
+                                    ₹{{item.price}}</p>
+                                <p class="text-[#757575] text-sm font-normal leading-normal mt-1">Original Price: <span
+                                        class="line-through">₹{{item.og_price}}</span></p>
+                            </div>
+                            <div class="space-y-2 text-sm">
+                                <p><span class="font-medium text-[#141414]">Category:</span> <span
+                                        class="text-[#757575]">{{item.category}}</span>
+                                </p>
+                                <p><span class="font-medium text-[#141414]">Sub-Category:</span> <span
+                                        class="text-[#757575]">{{item.sub_cat}}</span>
+                                </p>
+                                <p><span class="font-medium text-[#141414]">Condition:</span> <span
+                                        class="text-[#757575]">{{item.condition}}</span>
+                                </p>
+                                <p><span class="font-medium text-[#141414]">Age in years:</span> <span
+                                        class="text-[#757575]">{{item.age}}</span></p>
+                            </div>
+                            <p class="text-[#141414] text-base font-normal leading-relaxed">{{item.description}}</p>
+                            {% if item.assured == 'Assured' %}
+                            <div class="flex items-center gap-3 rounded-lg bg-green-100 p-3 border border-green-300">
+                                <div
+                                    class="text-green-600 flex items-center justify-center rounded-md bg-white shrink-0 size-10 shadow-sm">
+                                    <svg fill="currentColor" height="24px" viewBox="0 0 256 256" width="24px"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M208,40H48A16,16,0,0,0,32,56v58.78c0,89.61,75.82,119.34,91,124.39a15.53,15.53,0,0,0,10,0c15.2-5.05,91-34.78,91-124.39V56A16,16,0,0,0,208,40Zm0,74.79c0,78.42-66.35,104.62-80,109.18-13.53-4.51-80-30.69-80-109.18V56H208ZM82.34,141.66a8,8,0,0,1,11.32-11.32L112,148.68l50.34-50.34a8,8,0,0,1,11.32,11.32l-56,56a8,8,0,0,1-11.32,0Z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <p class="text-green-700 text-sm font-medium leading-normal flex-1">Quality Assured</p>
+                            </div>
+                            {%endif%}
+                            <form action="{{ url_for('confirm_purchase', item_id=item.id) }}" method="POST">
+
+                                <button type="submit"
+                                    class="w-full mt-6 flex items-center justify-center rounded-lg bg-[#141414] text-white py-3 px-6 text-base font-semibold shadow-md hover:bg-[#2d2d2d] transition-colors focus:outline-none focus:ring-2 focus:ring-[#141414]/50">
+                                    Buy Now </button>
+                            </form>
+                        </div>
+                    </div>
+                    {%if cat_item %}
+                    <div class="mt-16">
+                        <h2 class="text-[#141414] text-2xl font-bold leading-tight tracking-tight mb-6">You Might Also
+                            Like</h2>
+                        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-3">
+                            {% for item in cat_item %}
+
+                            <a class="card bg-white rounded-xl shadow-lg overflow-hidden block {% if item.assured == 'Assured' %}assured-card{% endif %}"
+                                data-assured="{{ item.assured }}" data-price="{{ item.price }}"
+                                data-category="{{ item.category }}" href="{{ url_for('buy', item_id=item.id) }}">
+                                {% set path = item.pic_file_path.split(',')[0] %}
+                                <img alt="{{ item.name }}" class="w-full h-48 object-cover" src="{{path}}" />
+
+                                <div class="p-4">
+                                    {% if item.assured == 'Assured' %}
+                                    <span
+                                        class="assured-badge inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mb-2">
+                                        <span class="material-icons text-sm mr-1">verified</span> Quality Assured
+                                    </span>
+                                    
+                                    {% endif %}
+
+                                    <h3 class="font-semibold text-lg text-gray-800 mb-1">{{ item.name }}</h3>
+                                    <div class="flex items-baseline mb-1">
+                                        <p class="text-xl font-bold text-indigo-600 mr-2">₹{{ item.price }}</p>
+                                        {% if item.og_price and item.og_price > item.price %}
+                                        <p class="text-sm text-gray-500 line-through">₹{{ item.og_price }}</p>
+                                        {% endif %}
+                                    </div>
+                                    <p class="text-xs text-gray-600">{{item.sub_cat}}</p>
+                                </div>
+                            </a>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                {%if items%}
+                <div class="mt-16">
+                    <h2 class="text-[#141414] text-2xl font-bold leading-tight tracking-tight mb-6">Other Items You
+                        Might Like
+                    </h2>
+                    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-3">
+                        {% for item in items %}
+
+                        <a class="card bg-white rounded-xl shadow-lg overflow-hidden block {% if item.assured == 'Assured' %}assured-card{% endif %}"
+                            data-assured="{{ item.assured }}" data-price="{{ item.price }}"
+                            data-category="{{ item.category }}" href="{{ url_for('buy', item_id=item.id) }}">
+                            {% set path = item.pic_file_path.split(',')[0] %}
+                            <img alt="{{ item.name }}" class="w-full h-48 object-cover" src="{{ path}}" />
+
+                            <div class="p-4">
+                                {% if item.assured == 'Assured' %}
+                                <span
+                                    class="assured-badge inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mb-2">
+                                    <span class="material-icons text-sm mr-1">verified</span> Quality Assured
+                                </span>
+                                
+                                {% endif %}
+
+                                <h3 class="font-semibold text-lg text-gray-800 mb-1">{{ item.name }}</h3>
+                                <div class="flex items-baseline mb-1">
+                                    <p class="text-xl font-bold text-indigo-600 mr-2">₹{{ item.price }}</p>
+                                    {% if item.og_price and item.og_price > item.price %}
+                                    <p class="text-sm text-gray-500 line-through">₹{{ item.og_price }}</p>
+                                    {% endif %}
+                                </div>
+                                <p class="text-xs text-gray-600">{{item.sub_cat}}</p>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    </div>
+    <script>
+        const carouselItems = document.getElementById('carousel-items');
+        const prevButton = document.querySelector('.carousel-prev');
+        const nextButton = document.querySelector('.carousel-next');
+        const dots = document.querySelectorAll('.carousel-dot');
+        const totalItems = carouselItems.children.length;
+        let currentIndex = 0;
+        function updateCarousel() {
+            carouselItems.style.transform = `translateX(-${currentIndex * 100}%)`;
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active-dot', index === currentIndex);
+                dot.classList.toggle('bg-white/80', index === currentIndex);
+                dot.classList.toggle('bg-white/50', index !== currentIndex);
+                if (index === currentIndex) {
+                    dot.classList.add('scale-125')
+                } else {
+                    dot.classList.remove('scale-125')
+                }
+            });
+        }
+        prevButton.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+            updateCarousel();
+        });
+        nextButton.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % totalItems;
+            updateCarousel();
+        });
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                currentIndex = parseInt(dot.dataset.slide);
+                updateCarousel();
+            });
+        });
+        updateCarousel(); // Initial setup
+    </script>
+
+</body>
+{%endblock%}

@@ -1,0 +1,109 @@
+{
+  "kgp": [
+    {
+      "id": "DG101",
+      "name": "DG_KGP",
+      "number": "7070190843",
+      "email": "vpotusvacation@gmail.com"
+    }
+  ],
+  "Delhi University - North Campus": [
+    {
+      "id": "DG101",
+      "name": "Rohit Sharma",
+      "number": "+91 9876543210",
+      "email": "rohit.sharma@example.com"
+    }
+  ],
+  "Jamia Millia Islamia": [
+    {
+      "id": "DG101",
+      "name": "Rohit Sharma",
+      "number": "+91 9876543210"
+    }
+  ],
+  "Banaras Hindu University": [
+    {
+      "id": "DG102",
+      "name": "Priya Verma",
+      "number": "+91 9123456780"
+    }
+  ],
+  "IIT BHU": [
+    {
+      "id": "DG102",
+      "name": "Priya Verma",
+      "number": "+91 9123456780"
+    }
+  ],
+  "Ashoka University": [
+    {
+      "id": "DG102",
+      "name": "Priya Verma",
+      "number": "+91 9123456780"
+    }
+  ],
+  "National Institute of Technology Trichy": [
+    {
+      "id": "DG103",
+      "name": "Aman Gupta",
+      "number": "+91 9988776655"
+    }
+  ],
+  "SRM University": [
+    {
+      "id": "DG103",
+      "name": "Aman Gupta",
+      "number": "+91 9988776655"
+    }
+  ],
+  "Anna University": [
+    {
+      "id": "DG103",
+      "name": "Aman Gupta",
+      "number": "+91 9988776655"
+    }
+  ],
+  "Christ University": [
+    {
+      "id": "DG104",
+      "name": "Sneha Iyer",
+      "number": "+91 9012345678"
+    }
+  ],
+  "St. Joseph's College": [
+    {
+      "id": "DG104",
+      "name": "Sneha Iyer",
+      "number": "+91 9012345678"
+    }
+  ],
+  "IIM Bangalore": [
+    {
+      "id": "DG104",
+      "name": "Sneha Iyer",
+      "number": "+91 9012345678"
+    }
+  ],
+  "BITS Pilani": [
+    {
+      "id": "DG105",
+      "name": "Karan Mehta",
+      "number": "+91 9765432109"
+    }
+  ],
+  "Manipal University": [
+    {
+      "id": "DG105",
+      "name": "Karan Mehta",
+      "number": "+91 9765432109"
+    }
+  ],
+  "Goa University": [
+    {
+      "id": "DG105",
+      "name": "Karan Mehta",
+      "number": "+91 9765432109"
+    }
+  ]
+}
