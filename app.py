@@ -960,7 +960,8 @@ def sell():
                 buffer.seek(0)
 
                 # Generate .webp filename
-                webp_filename = os.path.splitext(original_filename)[0] + '.webp'
+                # Unique key: two sellers uploading "IMG_001.jpg" must not overwrite each other
+                webp_filename = f"{uuid.uuid4().hex}_{os.path.splitext(original_filename)[0]}.webp"
 
                 # Upload to S3 from memory
                 s3_url = upload_to_s3(buffer, app.config['AWS_S3_BUCKET_NAME'], 'item_pics/' + webp_filename, content_type='image/webp')
@@ -1004,7 +1005,9 @@ def sell():
 
 
 
-        fastapi_predict_endpoint = "https://past-perfect-fastapi-production.up.railway.app/predict"
+        fastapi_predict_endpoint = os.getenv(
+            "PRICE_API_URL", "https://past-perfect-fastapi-production.up.railway.app/predict"
+        )
         if selected_category in subcategory_mapping:
             subcategory_field = subcategory_mapping[selected_category]
             if subcategory_field.data:  # Ensure it has a valid value
@@ -1025,7 +1028,11 @@ def sell():
             "product_type": UI_TO_MODEL_PRODUCT_TYPE[product_type],
             "original_price": original_price
         }
-        response = requests.post(fastapi_predict_endpoint, json=data)
+        try:
+            response = requests.post(fastapi_predict_endpoint, json=data, timeout=5)
+        except requests.RequestException:
+            flash('Price suggestion is temporarily unavailable. Please try again.', 'warning')
+            return render_template('sell.html', form=form, cond_desc=condition_descriptions)
         if response.status_code == 200:
             predicted_depreciation = response.json().get("predicted_depreciation")
             PRODUCT_DATA = {

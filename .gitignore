@@ -1,4 +1,6 @@
 .env
 __pycache__/
 *.py[cod]
-*.db
+*.dbartifacts/*.tmp
+pricing.db
+.pytest_cache/
